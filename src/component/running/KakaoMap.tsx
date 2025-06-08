@@ -39,6 +39,10 @@ export default function KaKaoMap() {
     }
   }, [position])
 
+  if(error) {
+    console.error(error)
+  }
+  
   return (
     <>
       <Script
