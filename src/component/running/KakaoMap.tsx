@@ -3,13 +3,16 @@ import useGetPosition from '@/hooks/useGetPosition';
 import Script from 'next/script';
 import React, {useEffect, useRef } from 'react';
 //import markerImage from '@/assets/currentMarker.svg'
-export default function KaKaoMap() {
+interface KaKaoMapProps {
+  className ?: string;
+}
+
+export default function KaKaoMap({className} : KaKaoMapProps) {
   const {position , error} = useGetPosition();
   const mapMarker = useRef(null);
   const map = useRef(null);
   const mapRef = useRef<HTMLDivElement>(null);
      
-
   const handleMapLoad = () => {
      if(!window.kakao.maps || !mapRef.current) return;
      window.kakao.maps.load(()=> {
@@ -50,7 +53,7 @@ export default function KaKaoMap() {
           strategy='afterInteractive'
           onLoad={()=> handleMapLoad()}
       />
-      <div ref={mapRef} id="map" className='w-full h-[80vh] mask-radial-circle mask-radial-from-[10%]'/>
+      <div ref={mapRef} id="map" className={className}/>
     </>
   )
 }

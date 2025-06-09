@@ -4,13 +4,18 @@ import React from 'react'
 interface ButtonProps {
     buttonName : string;
     onClick : () => void;
+    className ?: string;
 }
-export default function Button({buttonName, onClick} : ButtonProps) {
+export default function Button({buttonName, onClick , className} : ButtonProps) {
+  const baseClassName = 'flex justify-center items-center cursor-pointer ';
+  const lastClassName = baseClassName + className;
+  
   const onClickBtn = () => {
     onClick();
   }
+
   return (
-    <button className='flex justify-center items-center w-1/3  border max-w-xl cursor-pointer rounded-md' onClick={onClickBtn}>
+    <button className={lastClassName} onClick={onClickBtn}>
         {buttonName}
     </button>
   )

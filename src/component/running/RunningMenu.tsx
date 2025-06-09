@@ -2,20 +2,18 @@
 import React from 'react'
 import Button from '../ui/Button'
 
-export default function RunningMenu() {
+interface RunningMenuProps {
+  className?: string;
+}
+export default function RunningMenu( {className} : RunningMenuProps) {
   const onClickRunningStart = () => {
     console.log('start 버튼 클릭 됨')
   }
 
-  const onClickPlayList = () => {
-    console.log('playList 클릭 됨')
-  }
-
   return (
-    <section className='flex'>
+    <section className={className}>
         <h3 className='sr-only'>러닝 메뉴</h3>
-        <Button buttonName={"start"} onClick={onClickRunningStart}  />
-        <Button buttonName='playList' onClick={onClickPlayList}  />
+        <Button className='border rounded-full px-20 py-4 z-10 bg-black text-white hover:bg-gray-700 active:bg-gray-500' buttonName={"start"} onClick={onClickRunningStart}  />
     </section>
   )
 }
