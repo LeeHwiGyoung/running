@@ -1,4 +1,5 @@
 import RunCard from '@/component/dashboard/RunCard'
+import Total from '@/component/dashboard/Total'
 import React from 'react'
 
 const RunCardDummyData = 
@@ -43,6 +44,9 @@ export default function page() {
         <h2 className="font-bold text-lg p-2">통계</h2>
       </header>
       <main className='mb-16'>
+        <section>
+            <Total/>
+        </section>
         <section className='space-y-4'>
             <h3>최근 활동</h3>
             <ul className='flex flex-col gap-8 px-2'>            
