@@ -1,3 +1,4 @@
+import { formatPace, formatTime } from '@/utils/format';
 import React from 'react'
 interface RunCardProps {
     className ?: string;
@@ -10,23 +11,6 @@ interface RunCardProps {
 }
 
 export default function RunCard({className , date , title ,distance , distanceLabel, runningPace , runningTime }:RunCardProps) {
-  const formatPace = (pace : number) => {
-    const min = Math.trunc(pace / 60);
-    const sec = pace % 60;
-    return `${min}'${sec}"`
-  } 
-
-  const formatTime = (time :number) => {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const sec = time % 60;
-
-    if (hours > 0) {
-      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-    }
-    return `${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-  }
-  
   return (
     <article className={`max-w-128 p-4 shadow-[0px_1px_4px_rgba(0,0,0,0.16)] rounded-md bg-white ${className} cursor-pointer hover:shadow-[0px_5px_15px_rgba(0,0,0,0.35)]`}>
         <time dateTime={date}>{date}</time>
