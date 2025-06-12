@@ -16,10 +16,11 @@ interface GraphProps {
     marginRight ?: number;
     marginLeft ?: number;
     onClickBar ?: (index : number) => void; 
+    onClickOutside ?: () => void;
 }
 
 export default function BarGraph({
-    data, xKey, yKey, width=400 , height=200, marginBottom = 20,marginLeft = 20,marginRight = 20,marginTop = 20, onClickBar,
+    data, xKey, yKey, width=400 , height=200, marginBottom = 20,marginLeft = 20,marginRight = 20,marginTop = 20, onClickBar, onClickOutside
 }:GraphProps) {
   const svgRef = useRef<SVGSVGElement|null>(null);
 
@@ -87,13 +88,35 @@ export default function BarGraph({
     bars.on('mouseout', (event, )=> //그래프에서 마우스가 나갔을 때때
     d3.select(event.currentTarget).attr('fill', 'teal'));
 
+
+     if (onClickOutside) {
+      svg.on('click', () => {
+        onClickOutside();
+      });
+    }
+
     if(onClickBar) {
       bars.on('click', (event, d)=> {
         event.stopPropagation()
         onClickBar(d.id)
       })
     }
-  }, [data, xKey, yKey, width, height, marginLeft, marginRight, marginBottom, marginTop, onClickBar])
+
+    if (onClickOutside) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (svgRef.current && !svgRef.current.contains(event.target as Node)) {
+          onClickOutside();
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+
+      // cleanup 함수 반환
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
+    }
+  }, [data, xKey, yKey, width, height, marginLeft, marginRight, marginBottom, marginTop, onClickBar , onClickOutside])
   
   return (
     <svg ref={svgRef}></svg>
