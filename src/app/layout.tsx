@@ -17,6 +17,7 @@ export default function RootLayout({
       <body>
         {children}
         <BottomNav/>
+        <div id="modal-root"></div>
       </body>
     </html>
   );
