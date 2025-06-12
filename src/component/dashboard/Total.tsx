@@ -30,12 +30,15 @@ export default function Total() {
     setSelectedBar(index);
   }
 
-  console.log(selectedBar)
+  const onClickOutsideBar = () => {
+    setSelectedBar(null);
+  }
+  
   return (
     <section className='relative'>
       <h2 className='sr-only'>러닝 통계</h2>
-      <RunningInfo runCount={totalData.totalRunCount} distance={totalData.totalDistance} time={totalData.totalTime} /> 
-      <BarGraph data={runningData} xKey={'day'} yKey={'distance'} width={540} height={200} onClickBar={onClickBar}/>
+      <RunningInfo runCount={totalData.totalRunCount} distance={totalData.totalDistance} time={totalData.totalTime} />
+      <BarGraph data={runningData} xKey={'day'} yKey={'distance'} width={540} height={200} onClickBar={onClickBar} onClickOutside={onClickOutsideBar}/>
       {selectedBar !== null && <RunningInfo className='absolute top-0 z-index-100 bg-white border' runCount={runningData[selectedBar].runCount} distance={runningData[selectedBar].distance} time={runningData[selectedBar].time}/>}
     </section>
   )
