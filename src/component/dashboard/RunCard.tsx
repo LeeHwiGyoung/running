@@ -7,12 +7,13 @@ interface RunCardProps {
     distance : number;
     distanceLabel : string;
     runningPace : number;
-    runningTime : number; 
+    runningTime : number;
+    onClick ?: () => void;
 }
 
-export default function RunCard({className , date , title ,distance , distanceLabel, runningPace , runningTime }:RunCardProps) {
+export default function RunCard({className ,date , title ,distance , distanceLabel, runningPace , runningTime , onClick}:RunCardProps) {
   return (
-    <article className={`max-w-128 p-4 shadow-[0px_1px_4px_rgba(0,0,0,0.16)] rounded-md bg-white ${className} cursor-pointer hover:shadow-[0px_5px_15px_rgba(0,0,0,0.35)]`}>
+    <article onClick={onClick} className={`max-w-128 p-4 shadow-[0px_1px_4px_rgba(0,0,0,0.16)] rounded-md bg-white cursor-pointer hover:shadow-[0px_5px_15px_rgba(0,0,0,0.35)] ${className}`}>
         <time dateTime={date}>{date}</time>
         <h4 className='text-gray-500'>{title}</h4>
         <section className='flex gap-4'>
