@@ -13,7 +13,9 @@ export default function RunningMenu( {className} : RunningMenuProps) {
   return (
     <section className={className}>
         <h3 className='sr-only'>러닝 메뉴</h3>
-        <Button className='border rounded-full px-20 py-4 z-10 bg-black text-white hover:bg-gray-700 active:bg-gray-500' buttonName={"start"} onClick={onClickRunningStart}  />
+        <Button className='border rounded-full px-20 py-4 z-10 bg-black text-white hover:bg-gray-700 active:bg-gray-500' onClick={onClickRunningStart}>
+           start
+        </Button>
     </section>
   )
 }
