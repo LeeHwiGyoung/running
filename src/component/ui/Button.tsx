@@ -5,8 +5,9 @@ interface ButtonProps {
     children ?: React.ReactNode;
     onClick ?: () => void;
     className ?: string;
+    type ?: 'button' | 'submit' | 'reset';
 }
-export default function Button({children, onClick , className} : ButtonProps) {
+export default function Button({children, onClick , className, type = 'button'} : ButtonProps) {
   const baseClassName = 'flex justify-center items-center cursor-pointer ';
   const lastClassName = baseClassName + className;
   
@@ -15,7 +16,7 @@ export default function Button({children, onClick , className} : ButtonProps) {
   }
 
   return (
-    <button className={lastClassName} onClick={onClickBtn}>
+    <button className={lastClassName} onClick={onClickBtn} type={type}>
         {children}
     </button>
   )
