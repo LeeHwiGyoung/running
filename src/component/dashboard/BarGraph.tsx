@@ -5,7 +5,7 @@ import * as d3 from "d3";
 interface DataItem {
     [key: string]: string | number;
 }
-interface GraphProps {
+interface BarGraphProps {
     data :  DataItem[];
     xKey : string;
     yKey : string;
@@ -21,7 +21,7 @@ interface GraphProps {
 
 export default function BarGraph({
     data, xKey, yKey, width=400 , height=200, marginBottom = 20,marginLeft = 20,marginRight = 20,marginTop = 20, onClickBar, onClickOutside
-}:GraphProps) {
+}:BarGraphProps) {
   const svgRef = useRef<SVGSVGElement|null>(null);
 
   useEffect(()=> {
