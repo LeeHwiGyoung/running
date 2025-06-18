@@ -4,6 +4,7 @@ import KakaoMap from '../KakaoMap'
 import { UserPosition } from '@/types/type';
 import Button from '../ui/Button';
 import LineGraph from './LineGraph';
+import { formatPace } from '@/utils/format';
 const dummyPace = [
     {
       
@@ -23,7 +24,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 0,
         "instantPaceFormatted": "0",
         "averagePaceSecondsPerKm": 0,
-        "averagePaceFormatted": "0:00"
+        "averagePaceFormatted": "0:00",
+        "averageCadence" : 170
       }
     },
     {
@@ -44,7 +46,9 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 185.19,
         "instantPaceFormatted": "185",
         "averagePaceSecondsPerKm": 185.19,
-        "averagePaceFormatted": "3:05"
+        "averagePaceFormatted": "3:05",
+        "averageCadence" : 172
+        
       }
     },
     {
@@ -65,7 +69,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 181.16,
         "instantPaceFormatted": "181",
         "averagePaceSecondsPerKm": 183.15,
-        "averagePaceFormatted": "3:03"
+        "averagePaceFormatted": "3:03",
+        "averageCadence" : 175
       }
     },
     {
@@ -86,7 +91,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 132.28,
         "instantPaceFormatted": "132",
         "averagePaceSecondsPerKm": 162.34,
-        "averagePaceFormatted": "2:42"
+        "averagePaceFormatted": "2:42",
+        "averageCadence" : 177
       }
     },
     {
@@ -107,7 +113,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 123.76,
         "instantPaceFormatted": "124",
         "averagePaceSecondsPerKm": 150.60,
-        "averagePaceFormatted": "2:30"
+        "averagePaceFormatted": "2:30",
+        "averageCadence" : 171
       }
     },
     {
@@ -128,7 +135,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 120.77,
         "instantPaceFormatted": "121",
         "averagePaceSecondsPerKm": 143.51,
-        "averagePaceFormatted": "2:23"
+        "averagePaceFormatted": "2:23",
+        "averageCadence" : 180
       }
     },
     {
@@ -149,7 +157,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 123.15,
         "instantPaceFormatted": "123",
         "averagePaceSecondsPerKm": 139.66,
-        "averagePaceFormatted": "2:19"
+        "averagePaceFormatted": "2:19",
+        "averageCadence" : 182
       }
     },
     {
@@ -170,7 +179,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 164.47,
         "instantPaceFormatted": "164",
         "averagePaceSecondsPerKm": 142.74,
-        "averagePaceFormatted": "2:22"
+        "averagePaceFormatted": "2:22",
+        "averageCadence" : 171
       }
     },
     {
@@ -191,7 +201,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 231.48,
         "instantPaceFormatted": "231",
         "averagePaceSecondsPerKm": 149.93,
-        "averagePaceFormatted": "2:29"
+        "averagePaceFormatted": "2:29",
+        "averageCadence" : 173
       }
     },
     {
@@ -212,7 +223,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 211.86,
         "instantPaceFormatted": "211",
         "averagePaceSecondsPerKm": 155.09,
-        "averagePaceFormatted": "2:35"
+        "averagePaceFormatted": "2:35",
+        "averageCadence" : 175
       }
     },
     {
@@ -233,7 +245,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 123.76,
         "instantPaceFormatted": "124",
         "averagePaceSecondsPerKm": 151.15,
-        "averagePaceFormatted": "2:31"
+        "averagePaceFormatted": "2:31",
+        "averageCadence" : 177
       }
     },
     {  
@@ -253,7 +266,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 120.77,
         "instantPaceFormatted": "121",
         "averagePaceSecondsPerKm": 134.44,
-        "averagePaceFormatted": "2:14"
+        "averagePaceFormatted": "2:14",
+        "averageCadence" : 173
       }
     },
     {
@@ -274,7 +288,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 126.90,
         "instantPaceFormatted": "126",
         "averagePaceSecondsPerKm": 145.77,
-        "averagePaceFormatted": "2:25"
+        "averagePaceFormatted": "2:25",
+        "averageCadence" : 177
       }
     },
     {
@@ -295,7 +310,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 185.19,
         "instantPaceFormatted": "185",
         "averagePaceSecondsPerKm": 148.20,
-        "averagePaceFormatted": "2:28"
+        "averagePaceFormatted": "2:28",
+        "averageCadence" : 182
       }
     },
     {
@@ -316,7 +332,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 181.16,
         "instantPaceFormatted": "181",
         "averagePaceSecondsPerKm": 150.15,
-        "averagePaceFormatted": "2:30"
+        "averagePaceFormatted": "2:30",
+        "averageCadence" : 184
       }
     },
     {
@@ -337,7 +354,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 132.28,
         "instantPaceFormatted": "132",
         "averagePaceSecondsPerKm": 148.81,
-        "averagePaceFormatted": "2:28"
+        "averagePaceFormatted": "2:28",
+        "averageCadence" : 185
       }
     },
     {
@@ -358,7 +376,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 123.76,
         "instantPaceFormatted": "124",
         "averagePaceSecondsPerKm": 146.99,
-        "averagePaceFormatted": "2:26"
+        "averagePaceFormatted": "2:26",
+        "averageCadence" : 188
       }
     },
     {
@@ -379,7 +398,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 120.77,
         "instantPaceFormatted": "121",
         "averagePaceSecondsPerKm": 145.10,
-        "averagePaceFormatted": "2:25"
+        "averagePaceFormatted": "2:25",
+        "averageCadence" : 180
       }
     },
     {
@@ -401,6 +421,7 @@ const dummyPace = [
         "instantPaceFormatted": "123",
         "averagePaceSecondsPerKm": 143.68,
         "averagePaceFormatted": "2:23"
+        ,"averageCadence" : 178
       }
     },
     {
@@ -421,7 +442,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 164.47,
         "instantPaceFormatted": "164",
         "averagePaceSecondsPerKm": 144.64,
-        "averagePaceFormatted": "2:24"
+        "averagePaceFormatted": "2:24",
+        "averageCadence" : 177
       }
     },
     {
@@ -442,7 +464,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 231.48,
         "instantPaceFormatted": "231",
         "averagePaceSecondsPerKm": 147.38,
-        "averagePaceFormatted": "2:27"
+        "averagePaceFormatted": "2:27",
+        "averageCadence" : 174
       }
     },
     {
@@ -463,7 +486,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 211.86,
         "instantPaceFormatted": "211",
         "averagePaceSecondsPerKm": 149.57,
-        "averagePaceFormatted": "2:29"
+        "averagePaceFormatted": "2:29",
+        "averageCadence" : 172
       }
     },
     {
@@ -483,7 +507,8 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 123.76,
         "instantPaceFormatted": "124",
         "averagePaceSecondsPerKm": 148.16,
-        "averagePaceFormatted": "2:28"
+        "averagePaceFormatted": "2:28",
+        "averageCadence" : 173
       }
     },
     {
@@ -504,27 +529,26 @@ const dummyPace = [
         "instantPaceSecondsPerKm": 120.77,
         "instantPaceFormatted": "121",
         "averagePaceSecondsPerKm": 146.69,
-        "averagePaceFormatted": "2:26"
+        "averagePaceFormatted": "2:26",
+        "averageCadence" : 175
       }
     }
 ]
 
 
 interface DetailRunCardModalProps {
-    runningData : {latitude: number, longitude: number, timestamp: number}[];
     position : UserPosition;
 }
 
-export default function DetailRunCardModal({runningData , position} : DetailRunCardModalProps) {
-  const [clickedButton , setClickedButton] = useState<string|null>(null);
+export default function DetailRunCardModal({position} : DetailRunCardModalProps) {
+  const [clickedButton , setClickedButton] = useState<string>('pace');
   const [avgPace ,setAvgPace] = useState<string>("");
+  const [avgCadence, setAvgCadence] = useState<string>("");
   const [hoveredSegmentId, setHoveredSegmentId] = useState<number|null>(null);
 
   const onClickButton = (id : string) => {
     setClickedButton(id);
   }
-
-
 
   const dummyPath = dummyPace.map((data)=> {
     const id = data.properties.id;
@@ -534,19 +558,52 @@ export default function DetailRunCardModal({runningData , position} : DetailRunC
     }
   )
 
+
+
   return (
     <>
-        <KakaoMap className='w-full h-[200px]'latitude={position.latitude} longitude={position.longitude} level={2} dummyPath={dummyPath} hoveredSegmentId={hoveredSegmentId} />
+        <KakaoMap className='w-full h-[200px]'mapId={'detailMap'}latitude={position.latitude} longitude={position.longitude} level={2} dummyPath={dummyPath} hoveredSegmentId={hoveredSegmentId} />
         <div className='flex gap-4 mt-4'>
             <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-green-400 ${clickedButton === 'pace' ? 'bg-green-400' : 'bg-white'}`} onClick={()=> onClickButton('pace')}>
                 <span>평균 페이스 </span>
                 <span>{avgPace}</span>
             </Button>
             <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-green-400 ${clickedButton === 'cadence' ? 'bg-green-400' : 'bg-white'}`} onClick={()=> onClickButton('cadence')}>
-                케이던스
+                <span>케이던스</span>
+                <span>{avgCadence}</span>
             </Button>
         </div>
-        <LineGraph data={dummyPace} xKey={'cumulativeDistanceKm'} yKey={'instantPaceFormatted'} width={800} height={400} marginLeft={40} setAvg={setAvgPace} setHoveredSegmentId={setHoveredSegmentId}/>
+
+          {clickedButton === 'pace' && (
+                <LineGraph
+                    id="paceGraph"
+                    data={dummyPace}
+                    xKey={'cumulativeDistanceKm'}
+                    yKey={'instantPaceFormatted'} 
+                    reverseYAxis={true}
+                    width={800}
+                    height={400}
+                    marginLeft={40}
+                    setButtonText={setAvgPace}
+                    setHoveredSegmentId={setHoveredSegmentId}
+                    tickFormatFunc={formatPace}
+                />
+            )}
+
+            {clickedButton === 'cadence' && (
+                <LineGraph
+                    id="cadenceGraph"
+                    data={dummyPace}
+                    xKey={'cumulativeDistanceKm'}
+                    yKey={'averageCadence'}
+                    width={800}
+                    height={400}
+                    marginLeft={40}
+                    setButtonText={setAvgCadence}
+                    setHoveredSegmentId={setHoveredSegmentId}
+                    tickFormatFunc={(value: number) => value.toFixed(0)} // 케이던스 포맷 함수를 직접 전달
+                />
+            )}
     </>
   )
 }
