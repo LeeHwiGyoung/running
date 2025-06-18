@@ -1,4 +1,4 @@
-import { useTrackingStore } from '@/store/useTrackingStore';
+import { useRunningStore } from '@/store/useRunningStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -13,7 +13,7 @@ interface BottomNavItemProps {
 
 export default function BottomNavItem({href , label, imageSrc } : BottomNavItemProps) {
   const router = useRouter();
-  const {isTracking} = useTrackingStore();
+  const {isTracking} = useRunningStore();
 
   const handleClick = () => {
     // 러닝 탭일 때만 조건 적용
