@@ -1,6 +1,8 @@
+import { useTrackingStore } from '@/store/useTrackingStore';
 import Image from 'next/image';
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 import React from 'react'
+import Button from './Button';
 
 interface BottomNavItemProps {
     href : string;
@@ -10,11 +12,21 @@ interface BottomNavItemProps {
 }
 
 export default function BottomNavItem({href , label, imageSrc } : BottomNavItemProps) {
-  
+  const router = useRouter();
+  const {isTracking} = useTrackingStore();
+
+  const handleClick = () => {
+    // 러닝 탭일 때만 조건 적용
+    if (href === '/' && isTracking) {
+      router.push('/tracking');
+    } else {
+      router.push(href);
+    }
+  };
   return (
-    <Link className='flex flex-col grow-1 items-center justify-center ' href={href}>
+    <Button className='flex flex-col grow-1 items-center justify-center ' onClick={handleClick}>
         <Image src={imageSrc} alt="" width={24} height={24}/>
         <span>{label}</span>
-    </Link>
+    </Button>
   )
 }
