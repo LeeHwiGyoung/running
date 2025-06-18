@@ -1,7 +1,7 @@
 'use client';
 import Script from 'next/script';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-//import markerImage from '@/assets/currentMarker.svg'
+
 
 export interface KakaoMapHandle {
    getMap: () => any;
@@ -10,6 +10,7 @@ export interface KakaoMapHandle {
 
 interface KakaoMapProps {
   className ?: string;
+  mapId : string;
   latitude : number,
   longitude : number,
   level : number,
@@ -21,7 +22,7 @@ interface KakaoMapProps {
   hoveredSegmentId ?: number|null;
 }
 
-const KakaoMap = forwardRef<KakaoMapHandle,KakaoMapProps>(({className , level , latitude , longitude , dummyPath, hoveredSegmentId}, ref) => {
+const KakaoMap = forwardRef<KakaoMapHandle,KakaoMapProps>(({className,mapId , level , latitude , longitude , dummyPath, hoveredSegmentId}, ref) => {
   const map = useRef(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const [statePolyline,setStatePolyline] = useState([]);     
@@ -110,7 +111,7 @@ const KakaoMap = forwardRef<KakaoMapHandle,KakaoMapProps>(({className , level , 
           strategy='afterInteractive'
           onLoad={()=> initializeMap()}
       />
-      <div ref={mapRef} id="map" className={className}/>
+      <div ref={mapRef} id={mapId} className={className}/>
     </>
   )
 })
