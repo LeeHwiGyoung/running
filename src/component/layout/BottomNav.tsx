@@ -8,7 +8,6 @@ export default function BottomNav() {
 
   const navItems = [
     {path : '/' , label : '러닝', isActive : pathname.startsWith('/'), imageSrc : '/running.svg'},
-    {path : '/maraton' , label : "마라톤 정보" , isActive : pathname.startsWith('/maraton'), imageSrc : '/maraton.svg'},
     {path : '/dashboard' , label : "내 기록" , isActive : pathname.startsWith('/dashboard'), imageSrc : '/dashboard.svg'}
   ]
 
