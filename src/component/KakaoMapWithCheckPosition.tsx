@@ -24,7 +24,7 @@ export default function KaKaoMapWithCheckPosition({className} : KaKaoMapProps) {
     }
   }, [position])
   //배포테스트용
-  console.error(error);
+  console.log(error);
 
   return (
     <>
