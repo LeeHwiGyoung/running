@@ -1,10 +1,10 @@
 'use client';
-import { UserPosition } from '../types/type';
+import { Coordinate } from '../types/type';
 import { useEffect, useRef, useState } from "react";
 
 
 export default function useGetPosition() {
-  const [position , setPosition] = useState<UserPosition>({
+  const [position , setPosition] = useState<Coordinate>({
     longitude : null,
     latitude : null
   });
@@ -25,7 +25,8 @@ export default function useGetPosition() {
             setError(error.message);
         }, {
             enableHighAccuracy : true,
-            maximumAge : 0
+            maximumAge : 0,
+            timeout : 5000,
         })
     }else {
     setError('Geolocation을 지원하지 않는 브라우저입니다.')
