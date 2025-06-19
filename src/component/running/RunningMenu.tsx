@@ -1,13 +1,21 @@
 'use client';
 import React from 'react'
 import Button from '../ui/Button'
+import { useRunningStore } from '@/store/useRunningStore';
+import { useRouter } from 'next/navigation';
 
 interface RunningMenuProps {
   className?: string;
 }
 export default function RunningMenu( {className} : RunningMenuProps) {
+  const router = useRouter();
+  const {runningGoal} = useRunningStore()
+  
   const onClickRunningStart = () => {
-    console.log('start 버튼 클릭 됨')
+    if(runningGoal === 0) {
+      return; 
+    }
+    router.push('/tracking');
   }
 
   return (
