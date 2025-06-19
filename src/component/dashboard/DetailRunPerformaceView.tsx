@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react'
 import KakaoMap from '../KakaoMap'
-import { UserPosition } from '@/types/type';
+import { Coordinate } from '@/types/type';
 import Button from '../ui/Button';
 import LineGraph from './LineGraph';
 import { formatPace } from '@/utils/format';
@@ -536,11 +536,11 @@ const dummyPace = [
 ]
 
 
-interface DetailRunCardModalProps {
-    position : UserPosition;
+interface DetailRunPerformaceViewProps {
+    position : Coordinate;
 }
 
-export default function DetailRunCardModal({position} : DetailRunCardModalProps) {
+export default function DetailRunPerformaceView({position} : DetailRunPerformaceViewProps) {
   const [clickedButton , setClickedButton] = useState<string>('pace');
   const [avgPace ,setAvgPace] = useState<string>("");
   const [avgCadence, setAvgCadence] = useState<string>("");
