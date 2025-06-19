@@ -1,6 +1,9 @@
-export const formatPace = (pace : number) => {
+export const formatPace = (pace : number | null) => {
+    if(!pace){
+      return `-'--"`
+    }
     const min = Math.trunc(pace / 60);
-    const sec = pace % 60;
+    const sec = (pace % 60).toFixed(0);
     return `${min}'${sec}"`
   } 
 
