@@ -6,6 +6,7 @@ import TrackingCarousel from './TrackingCarousel';
 import { CarouselData } from '@/types/type';
 import { useRunningStore } from '@/store/useRunningStore';
 import useRunningTracking from '@/hooks/useRunningTracking';
+import CountDown from '../layout/CountDown';
 
 export default function Tracking() {
   const {isTracking , setTracking} = useRunningStore();
@@ -38,7 +39,9 @@ export default function Tracking() {
     setTracking(false)
   } 
   
-  return (       
+  return ( 
+    <>
+    {!isTracking ? <CountDown />  : 
     <article className='py-4'>
         <h2 className='sr-only'>현재 러닝</h2>
         <section className='flex font-bold'>
@@ -67,5 +70,7 @@ export default function Tracking() {
             </Button>
         </section>
     </article>
+    }
+    </>
   )
 }
