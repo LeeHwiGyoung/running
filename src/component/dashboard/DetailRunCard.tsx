@@ -14,7 +14,7 @@ interface DetailRunCardProps {
     cadence : number,
 }
 
-const dummyPath = [
+/* const dummyPath = [
   {"latitude": 37.4504924, "longitude": 126.6855140, "timestamp": 1718012400000},
   {"latitude": 37.4506140, "longitude": 126.6854992, "timestamp": 1718012402500},
   {"latitude": 37.4507024, "longitude": 126.6853755, "timestamp": 1718012405000},
@@ -39,7 +39,7 @@ const dummyPath = [
   {"latitude": 37.4506042, "longitude": 126.6848699, "timestamp": 1718012452500},
   {"latitude": 37.4506107, "longitude": 126.6851053, "timestamp": 1718012455000},
   {"latitude": 37.4505738, "longitude": 126.6853417, "timestamp": 1718012457500},
-]
+] */
 
 
 

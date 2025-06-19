@@ -3,8 +3,11 @@ import Script from 'next/script';
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 
-export interface KakaoMapHandle {
+export interface KakaoMapHandle 
+{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
    getMap: () => any;
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    getKaKaoInstance: () => any;
 }
 

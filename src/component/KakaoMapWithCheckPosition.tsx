@@ -23,10 +23,12 @@ export default function KaKaoMapWithCheckPosition({className} : KaKaoMapProps) {
       map.setCenter(newPos)
     }
   }, [position])
+  //배포테스트용
+  console.error(error);
 
   return (
     <>
-      <KakaoMap ref={kakaoMapRef} className={className} latitude={position.latitude} longitude={position.longitude} level={3} />
+      <KakaoMap ref={kakaoMapRef} className={className} latitude={position.latitude} longitude={position.longitude} level={3} mapId={'map'} />
     </>
   )
 }
