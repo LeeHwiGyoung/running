@@ -1,17 +1,28 @@
 'use client';
-
-import { useState } from "react";
+import { useRunningStore } from "@/store/useRunningStore";
 
 interface RunningGoalInputProps {
   className ?: string
 }
+
 export default function RunningGoalInput( {className} : RunningGoalInputProps) {
-  const [goal, setGoal] = useState<number>(0);
+  const {runningGoal , setRunningGoal} = useRunningStore();  
+  const maxValue = 100;
+
 
   const onChangeGoal = (event : React.ChangeEvent<HTMLInputElement>) => {
-    const newGoal = event.target.value; 
-    if(newGoal === "") return
-    setGoal(parseInt(newGoal)); 
+    const value = event.target.value; 
+    
+    if(value === '') {
+      setRunningGoal(null);
+      return;
+    }
+
+    const numValue = parseInt(value);
+    if(Number.isNaN(numValue)){
+     return; 
+    }
+    setRunningGoal(Math.min(numValue, maxValue));
   }
 
   return (
@@ -25,7 +36,8 @@ export default function RunningGoalInput( {className} : RunningGoalInputProps) {
          type="number"
          name='runningGoal'
          placeholder={'0'}
-         value={goal}
+         value={runningGoal ?? ''}
+         max={maxValue}
          onChange={onChangeGoal} />
     </div>
   )
