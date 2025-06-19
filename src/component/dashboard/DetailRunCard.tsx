@@ -1,12 +1,8 @@
 'use client';
 import { formatPace, formatTime } from '@/utils/format'
 import React from 'react'
-import KakaoMap from '../KakaoMap'
 import useCountUp from '@/hooks/useCountUp'
-import Button from '../ui/Button';
-import useModal from '@/hooks/useModal';
-import Modal from '../Modal';
-import DetailRunCardModal from './DetailRunCardModal';
+import DetailRunPerformaceView from './DetailRunPerformaceView';
 
 interface DetailRunCardProps {
     date: string,
@@ -57,8 +53,7 @@ export default function DetailRunCard({
     cadence,
 }:DetailRunCardProps) {
   const count = useCountUp({target : distance})
-  const {isOpen , onOpen , onClose} = useModal();
-
+  
   return (
     <article className='px-4'>
         <h2 className='text-2xl font-bold'>
@@ -84,15 +79,9 @@ export default function DetailRunCard({
                 <span>케이던스</span>
             </div>
         </section>
-        <section className='w-full h-[200px] rounded-xl overflow-hidden shadow-sm mt-4'>
-            <KakaoMap className='w-full h-full' level={3} latitude={37.4504924} longitude={126.6849254} />
+        <section className='mb-18'>
+            <DetailRunPerformaceView position={{latitude : 37.4504924 , longitude : 126.6849254}}/>
         </section>
-        <Button className="border w-full py-4 rounded-full border-gray-300 mt-4" onClick={onOpen}>
-            상세 경로
-        </Button>
-        <Modal className={'z-1000'} isOpen={isOpen} onClose={onClose}>
-          <DetailRunCardModal runningData={dummyPath} position={{latitude : 37.4504924 , longitude : 126.6849254}}/>
-        </Modal>
     </article>
   )
 }
