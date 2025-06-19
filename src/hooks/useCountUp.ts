@@ -7,10 +7,9 @@ interface useCountUpProps {
     decimalPlaces ?: number;
 }
 export default function useCountUp({target , duration = 1000 , decimalPlaces = 2,}:useCountUpProps){
-    const [count ,setCount] = useState<number>(0);
-    const frame = useRef<number>(0)
+  const [count ,setCount] = useState<number>(0);
+  const frame = useRef<number>(0)
 
-   
   useEffect(() => {
     let startTime: number | null = null
     const animate = (time: number) => {
@@ -31,7 +30,7 @@ export default function useCountUp({target , duration = 1000 , decimalPlaces = 2
     return () => {
       if (frame.current) cancelAnimationFrame(frame.current)
     }
-  }, [target, duration])
+  }, [target, duration, decimalPlaces])
 
   return count
 }
