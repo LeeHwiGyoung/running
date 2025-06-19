@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface RunningState {
-    runningGoal : number;
+    runningGoal : number | null;
     isTracking : boolean;
-    setRunningGoal : (value : number) => void;
+    setRunningGoal : (value : number | null) => void;
     setTracking : (value : boolean) => void;
 }
 
