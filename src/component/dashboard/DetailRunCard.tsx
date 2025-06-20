@@ -60,10 +60,10 @@ export default function DetailRunCard({
             {title}
         </h2>
         <time dateTime={date}>{date}</time> 
-     {/*    <div className='flex flex-col'>
+        <div className='flex flex-col'>
             <data className="text-7xl font-bold transition" value={distance}>{count.toFixed(2).toLocaleString()}</data>
             <span>{distanceLabel}</span>
-        </div> */}
+        </div>
         <section className='flex mt-4'>
             <h3 className='sr-only'>러닝 통계</h3>
             <div className='flex flex-col grow-1'>
