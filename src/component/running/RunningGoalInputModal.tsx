@@ -1,18 +1,25 @@
 'use client';
 import { useRunningStore } from "@/store/useRunningStore";
+import { useEffect, useRef } from "react";
 
-interface RunningGoalInputProps {
+interface RunningGoalInputModalProps {
   className ?: string
+  onClose : () => void;
 }
 
-export default function RunningGoalInput( {className} : RunningGoalInputProps) {
+export default function RunningGoalInputModal( {className , onClose } : RunningGoalInputModalProps) {
+  const inputRef = useRef<HTMLInputElement| null>(null)
   const {runningGoal , setRunningGoal} = useRunningStore();  
   const maxValue = 100;
 
-
+  const handleEnter = (e:React.KeyboardEvent) => {
+    if(e.key === 'Enter'){
+      onClose();
+    }
+  }
+  
   const onChangeGoal = (event : React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value; 
-    
     if(value === '') {
       setRunningGoal(null);
       return;
@@ -25,20 +32,28 @@ export default function RunningGoalInput( {className} : RunningGoalInputProps) {
     setRunningGoal(Math.min(numValue, maxValue));
   }
 
+  useEffect(()=> {
+    if(inputRef.current){
+      inputRef.current.focus();
+    }
+  }, [])
+
   return (
     <div className={className}>
         <label htmlFor="runningGoal" className="sr-only" >
           목표 거리  
         </label>  
-        <input 
-         className="w-full py-4 border-b outline-none text-2xl font-bold text-center"
+        <input
+         ref={inputRef}
+         className="absolute top-20 left-[50%] translate-[-50%] py-4 border-b outline-none text-2xl font-bold text-center"
          id='runningGoal'
          type="number"
          name='runningGoal'
          placeholder={'0'}
          value={runningGoal ?? ''}
          max={maxValue}
-         onChange={onChangeGoal} />
+         onChange={onChangeGoal}
+         onKeyDown={handleEnter} />
     </div>
   )
 }
