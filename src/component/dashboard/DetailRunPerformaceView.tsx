@@ -546,23 +546,24 @@ export default function DetailRunPerformaceView({position} : DetailRunPerformace
   const [avgCadence, setAvgCadence] = useState<string>("");
   const [hoveredSegmentId, setHoveredSegmentId] = useState<number|null>(null);
 
+  
   const onClickButton = (id : string) => {
     setClickedButton(id);
   }
-
-  const dummyPath = dummyPace.map((data)=> {
+  console.log(hoveredSegmentId)
+ /*  const dummyPath = dummyPace.map((data)=> {
     const id = data.properties.id;
     const latitude = data.geometry.coordinates[1];
     const longitude = data.geometry.coordinates[0];
     return {id, latitude , longitude}  
     }
-  )
+  ) */
 
 
 
   return (
     <>
-        <KakaoMap className='w-full h-[200px]'mapId={'detailMap'}latitude={position.latitude} longitude={position.longitude} level={2} dummyPath={dummyPath} hoveredSegmentId={hoveredSegmentId} />
+        <KakaoMap className='w-full h-[200px]' mapId='detailMap' latitude={position.latitude} longitude={position.longitude} level={2} />
         <div className='flex gap-4 mt-4'>
             <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-green-400 ${clickedButton === 'pace' ? 'bg-green-400' : 'bg-white'}`} onClick={()=> onClickButton('pace')}>
                 <span>평균 페이스 </span>
