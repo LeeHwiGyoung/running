@@ -1,5 +1,5 @@
-import { Coordinate, UserPosition } from '@/types/type'
-import { calculateDistance } from '@/utils/calculateDistance';
+import { UserPosition } from '@/types/type'
+import { calculateDistance, calculatePace } from '@/utils/calculate';
 import { useEffect, useRef, useState } from 'react'
 interface useRunningTrackingProps {
   isRunning : boolean;
@@ -16,75 +16,69 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
   const prevPositionRef = useRef<UserPosition|null>(null);
   const watchId = useRef<number|null>(null);
   const intervalId = useRef(null);
-  
-  useEffect(() => {
-    if(navigator.geolocation){
-      watchId.current = navigator.geolocation.watchPosition((pos)=> {
-        const {latitude , longitude} = pos.coords;
-        const timestamp = pos.timestamp;
-        const current = {latitude , longitude , timestamp};
-        setPath((prevPath)=> [...prevPath , current]);
+   
+  //interval 이 1초 지날 때 마다 실행되는 함수로 time을 1증가 시키고 현재 위치를 저장하는 역할
+  const timerCallback = () => {
+    setTime((prevTime) => {
+      const newTime = prevTime + 1
+      if(prevPositionRef.current) {
+        const newCurrentPosition = prevPositionRef.current;
 
-        if(prevPositionRef.current) { //거리 계산 이전 거리가 있으면
-          const segmentDistance = calculateDistance(prevPositionRef.current , current);
-          setDistance((prevDistance) => prevDistance + segmentDistance);
-        }
-        prevPositionRef.current = current;
-      },
-        (error) => {
-            setError(error.message);
-        },
-        {
-            enableHighAccuracy : true,
-            maximumAge : 0,
-            timeout : 5000,
-        })
-    }
+        setPath((prevPath) => {
+          const updatePath = [...prevPath, newCurrentPosition];
+          let currentSegmentDistance = 0;
+          if(prevPath.length > 0) {
+            const lastRecordedPosition = prevPath[prevPath.length - 1];
+            currentSegmentDistance = calculateDistance({ latitude: lastRecordedPosition.latitude, longitude: lastRecordedPosition.longitude },{ latitude: newCurrentPosition.latitude, longitude: newCurrentPosition.longitude })
+          }
 
-    return () => {
-      if (watchId.current !== null) {
-        navigator.geolocation.clearWatch(watchId.current);
+          setDistance((prevDistance) => {
+            const newTotalDistance = prevDistance + currentSegmentDistance;
+            const currentPaceValue = calculatePace(currentSegmentDistance , 1);
+            const averagePaceValue = calculatePace(newTotalDistance , newTime);
+
+            setCurPace(currentPaceValue);
+            setAvgPace(averagePaceValue)
+
+            return newTotalDistance;
+          });
+          return updatePath;
+        });
       }
+      return newTime;
+    });
+  }
+
+
+  useEffect(()=> {
+    if(navigator.geolocation) {
+      watchId.current = navigator.geolocation.watchPosition((position)=> {
+        prevPositionRef.current = { //현재 위치를 기록하고 있는 ref
+          latitude : position.coords.latitude,
+          longitude: position.coords.longitude,
+          timestamp : position.timestamp
+        }
+      } , (err) => {
+        setError(err.message)
+      }, {
+         enableHighAccuracy : false,
+         maximumAge : 0,
+         timeout : 1000,
+      })
     }
-  }, [])
+  })
+
 
   useEffect(()=> { // 타임 계산
     if(!isRunning) return; // 러닝 중이 아니라면
-    intervalId.current = setInterval(()=> {
-      setTime((prevTime) => {
-        return prevTime + 1
-      })
-    } ,1000);
+    intervalId.current = setInterval(timerCallback, 1000);
 
     return () => {
       clearInterval(intervalId.current)
     }
   }, [isRunning])  
-  
-  useEffect(() => { //pace 계산
-    if(distance > 0 && time > 0){
-      const avgPaceValue = time / distance;
-      setAvgPace(avgPaceValue);
 
-      if(path.length >= 2) { //최근 2개 지점을 대상으로 
-        const lastTwoPoints = path.slice(-2);
-        const {latitude : lastLatitude ,  longitude : lastLongitude, timestamp:lastTime} = lastTwoPoints[0];
-        const {latitude : curLatitude ,  longitude : curLongitude, timestamp:curTime} = lastTwoPoints[1];
-        const lastCoords:Coordinate = {latitude : lastLatitude ,longitude : lastLongitude}
-        const curCoords: Coordinate = {latitude :curLatitude , longitude : curLongitude}
-        const segmentTime = (lastTime - curTime) / 1000
-        const segmentDistance = calculateDistance(lastCoords, curCoords);
-        if (segmentDistance > 0 && segmentTime > 0) {
-          const currentPace = segmentTime / segmentDistance; 
-          setCurPace(currentPace);
-        } else {
-          // 거리가 0이거나 시간이 0이면 페이스 계산 불가
-          setCurPace(null);
-        }
-      }
-    }
-  }, [distance, path, time])
-  return {curPace , avgPace , distance , time , error }
+  return {path ,curPace , avgPace , distance , time , error }
 }
 
 
