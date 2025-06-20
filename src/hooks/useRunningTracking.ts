@@ -61,7 +61,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
       } , (err) => {
         setError(err.message)
       }, {
-         enableHighAccuracy : false,
+         enableHighAccuracy : true,
          maximumAge : 0,
          timeout : 1000,
       })
