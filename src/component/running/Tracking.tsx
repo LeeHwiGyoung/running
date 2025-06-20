@@ -1,17 +1,18 @@
 'use client';
 import { formatPace, formatTime } from '@/utils/format';
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../ui/Button';
 import TrackingCarousel from './TrackingCarousel';
 import { CarouselData } from '@/types/type';
 import { useRunningStore } from '@/store/useRunningStore';
 import useRunningTracking from '@/hooks/useRunningTracking';
 import CountDown from '../layout/CountDown';
+import { useRouter } from 'next/navigation';
 
 export default function Tracking() {
-  const {isTracking , setTracking} = useRunningStore();
+  const router = useRouter();
+  const {isTracking , setTracking , step, setStep} = useRunningStore();
   const {avgPace , curPace , distance , time } = useRunningTracking({isRunning : isTracking});
-  
   const carouselData:CarouselData[] = [
     {
         value : distance.toFixed(2), 
@@ -39,9 +40,25 @@ export default function Tracking() {
     setTracking(false)
   } 
   
+  const onClickStopBtn = () => {
+    setTracking(false);
+    router.push('/');
+  }
+
+  const onClickStartBtn = () => {
+    setStep(0);
+  }
+
+  useEffect(()=> {
+    return ()=> {
+        setStep(0);
+    }
+  }, [])
+
   return ( 
     <>
-    {!isTracking ? <CountDown />  : 
+    {step === 0 && <CountDown />}
+    {step === 1 && 
     <article className='py-4'>
         <h2 className='sr-only'>현재 러닝</h2>
         <section className='flex font-bold'>
@@ -65,9 +82,22 @@ export default function Tracking() {
         </section>
         <section className='flex items-center justify-center mb-12'>
             <h3 className='sr-only'>측정 메뉴</h3>
-            <Button className='bg-black p-8 rounded-full text-white' onClick={onClickPauseBtn}>
-                중지
-            </Button>
+            { isTracking ?
+                <div>
+                    <Button className='bg-black p-8 rounded-full text-white' onClick={onClickPauseBtn}>
+                        중지
+                    </Button>
+                </div> 
+                : 
+                <div className='flex gap-4'>
+                    <Button className='bg-black p-8 rounded-full text-white' onClick={onClickStopBtn}>
+                        정지
+                    </Button>
+                    <Button className='bg-black p-8 rounded-full text-white' onClick={onClickStartBtn}>
+                        시작
+                    </Button>
+                </div>
+            }
         </section>
     </article>
     }
