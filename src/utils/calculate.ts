@@ -15,3 +15,8 @@ export function calculateDistance(coord1 : Coordinate ,coord2 : Coordinate) : nu
   const distanceInMeters = R * c; // 미터
   return distanceInMeters / 1000; // 킬로미터로 반환 
 }
+
+export function calculatePace(distance: number ,timeSecond : number) {
+  const pace = (timeSecond / 60) / distance;
+  return pace;
+}
