@@ -76,7 +76,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
     setDistance((prevDistance) => prevDistance + segmentDistance); //거리 업데이트
     setCurPace(curPaceValue) //순간 페이스 업데이트
     setAvgPace(avgPaceValue); //평균 페이스 업데이트
-   }, [path , runningSessionRef.current]);
+   }, [path]);
 
 
   useEffect(()=> {
@@ -92,7 +92,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
       } , (err) => {
         setError(err.message)
       }, {
-         enableHighAccuracy : false,
+         enableHighAccuracy : true,
          maximumAge : 0,
          timeout : 5000,
       })
