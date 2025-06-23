@@ -1,6 +1,6 @@
 'use client'
 import ReactDOM from 'react-dom'
-import Button from './ui/Button';
+import Button from './Button';
 
 interface ModalProps {
   className ?: string;

@@ -1,12 +1,12 @@
 'use client';
 import { formatPace, formatTime } from '@/utils/format';
 import React, { useEffect } from 'react'
-import Button from '../ui/Button';
+import Button from '../Button';
 import TrackingCarousel from './TrackingCarousel';
 import { CarouselData } from '@/types/type';
 import { useRunningStore } from '@/store/useRunningStore';
 import useRunningTracking from '@/hooks/useRunningTracking';
-import CountDown from '../layout/CountDown';
+import CountDown from '../CountDown';
 import { useRouter } from 'next/navigation';
 
 export default function Tracking() {

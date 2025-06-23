@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import React from 'react'
-import BottomNavItem from './ui/BottomNavItem';
+import BottomNavItem from './BottomNavItem';
 export default function BottomNav() {
   const pathname = usePathname();
 

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import KakaoMap from '../KakaoMap'
 import { Coordinate } from '@/types/type';
-import Button from '../ui/Button';
+import Button from '../Button';
 import LineGraph from './LineGraph';
 import { formatPace } from '@/utils/format';
 const dummyPace = [
