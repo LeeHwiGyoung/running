@@ -60,20 +60,23 @@ export default function RunningGoalInputModal( {className = "" , onClose } : Run
           </Button>
         </Header>
        
-        <label htmlFor="runningGoal" className="sr-only" >
+        <div className="relative top-20 left-[50%] translate-x-[-50%] translate-y-[50%] outline-none text-2xl font-bold w-[50%] ">
+          <label htmlFor="runningGoal" className="sr-only" >
             목표 거리  
           </label>  
           <input
-          ref={inputRef}
-          className="relative top-20 left-[50%] translate-x-[-50%] translate-y-[50%] border-b outline-none text-2xl font-bold text-center w-[50%]"
-          id='runningGoal'
-          type="number"
-          name='runningGoal'
-          placeholder={'0'}
-          value={curRunningGoal ?? ''}
-          max={maxValue}
-          onChange={onChangeGoal}
-          onKeyDown={handleEnter} />
+            ref={inputRef}
+            className="outline-none w-full text-center"
+            id='runningGoal'
+            type="number"
+            name='runningGoal'
+            placeholder={'0'}
+            value={curRunningGoal ?? ''}
+            max={maxValue}
+            onChange={onChangeGoal}
+            onKeyDown={handleEnter} />
+            <div className='w-full border after:absolute after:left-[50%] after:translate-x-[-50%] after:content-["킬로미터"] after:text-sm after:mt-1 after:font-normal'></div>
+        </div>
     </article>
   )
 }
