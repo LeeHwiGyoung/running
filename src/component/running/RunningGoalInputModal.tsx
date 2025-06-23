@@ -8,7 +8,7 @@ interface RunningGoalInputModalProps {
   onClose : () => void;
 }
 
-export default function RunningGoalInputModal( {className , onClose } : RunningGoalInputModalProps) {
+export default function RunningGoalInputModal( {className = "" , onClose } : RunningGoalInputModalProps) {
   const inputRef = useRef<HTMLInputElement| null>(null)
   const {runningGoal , setRunningGoal} = useRunningStore();  
   const maxValue = 100;

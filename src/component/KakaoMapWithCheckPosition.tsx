@@ -7,7 +7,7 @@ interface KaKaoMapProps {
   className ?: string;
 }
 
-export default function KaKaoMapWithCheckPosition({className} : KaKaoMapProps) {
+export default function KaKaoMapWithCheckPosition({className = ""} : KaKaoMapProps) {
   const {position , error} = useGetPosition();
   const kakaoMapRef = useRef<KakaoMapHandle>(null);
   

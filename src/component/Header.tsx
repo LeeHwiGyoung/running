@@ -5,7 +5,7 @@ interface HeaderProps {
     children ?: React.ReactNode;
 }
 export default function Header(
-    {children , className} : HeaderProps
+    {children , className=""} : HeaderProps
 ) {
   return (
     <header className={`p-4 font-bold text-lg ${className}`}>

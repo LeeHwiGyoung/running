@@ -8,7 +8,7 @@ interface RunningInfoProps {
   time : number
 }
 
-export default function RunningInfo({className,runCount , distance, time} : RunningInfoProps) {
+export default function RunningInfo({className="",runCount , distance, time} : RunningInfoProps) {
   const baseClassNames = "flex w-full text-center text-2xl font-bold"
   let lastClassName = baseClassNames;
   if(className){

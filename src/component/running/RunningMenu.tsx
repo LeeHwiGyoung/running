@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface RunningMenuProps {
   className?: string;
 }
-export default function RunningMenu( {className} : RunningMenuProps) {
+export default function RunningMenu( {className=""} : RunningMenuProps) {
   const router = useRouter();
   const {runningGoal} = useRunningStore()
   

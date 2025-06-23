@@ -12,7 +12,7 @@ export default function BottomNav() {
   ]
 
   return (
-    <nav className='fixed flex w-full left-0 bottom-0 border-t z-100 bg-white'>
+    <nav className='fixed flex w-full left-0 bottom-0 border-t z-1000 bg-white'>
       {navItems.map((navItem)=> <BottomNavItem key={navItem.path} href={navItem.path} label={navItem.label} isActive={navItem.isActive} imageSrc={navItem.imageSrc}/>)}
     </nav>
   )

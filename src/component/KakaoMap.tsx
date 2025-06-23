@@ -25,7 +25,7 @@ interface KakaoMapProps {
   hoveredSegmentId ?: number|null;
 }
 
-const KakaoMap = forwardRef<KakaoMapHandle,KakaoMapProps>(({className,mapId , level , latitude , longitude }, ref) => {
+const KakaoMap = forwardRef<KakaoMapHandle,KakaoMapProps>(({className="",mapId , level , latitude , longitude }, ref) => {
   const map = useRef(null);
   const mapRef = useRef<HTMLDivElement>(null);
      

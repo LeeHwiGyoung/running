@@ -9,7 +9,7 @@ interface ModalProps {
   onClose: () => void
 }
 
-export default function Modal({ className, isOpen, onClose, children }: ModalProps) {
+export default function Modal({ className="", isOpen, onClose, children }: ModalProps) {
   if (typeof window === 'undefined') return null
   
   const modalRoot = document.getElementById('modal-root')
@@ -17,7 +17,7 @@ export default function Modal({ className, isOpen, onClose, children }: ModalPro
 
   return ReactDOM.createPortal(
       <div
-        className={`fixed top-0 bg-white w-full h-[100vh]  ${className}`}
+        className={`fixed top-0 bg-white w-full h-[100vh] max-w-md ${className}`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

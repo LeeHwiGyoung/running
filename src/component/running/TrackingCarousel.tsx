@@ -6,7 +6,7 @@ interface TrackingCarouselProps {
     className ?: string;
 }
 
-export default function TrackingCarousel({data , className}:TrackingCarouselProps) {
+export default function TrackingCarousel({data , className=""}:TrackingCarouselProps) {
   const [curIndex , setCurIndex] = useState<number>(0);
   const carouselLength = data.length;
   
