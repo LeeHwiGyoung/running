@@ -1,6 +1,7 @@
 import DetailRunCard from '@/component/dashboard/DetailRunCard'
 import BackButton from '@/component/BackButton'
 import React from 'react'
+import Header from '@/component/Header'
 
 const dummyDetail = {
     id: 0,
@@ -17,7 +18,9 @@ const dummyDetail = {
 export default function page() {  
   return (
     <main>
-      <BackButton />
+      <Header className='w-full mb-4' borderBottomShadow={true}>
+        <BackButton />
+      </Header>
       <DetailRunCard 
         date={dummyDetail.date}
         title={dummyDetail.title}
