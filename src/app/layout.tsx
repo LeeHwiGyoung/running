@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="max-w-md m-auto">
         {children}
         <BottomNav/>
         <div id="modal-root"></div>
