@@ -21,7 +21,7 @@ export default function RunningGoal({className=""} : RunningGoalProps) {
       <Button onClick={onOpen}>{runningGoal===null ? 0 : runningGoal}</Button>
       <div className='w-full border'></div>
       <Modal className={'z-100'} isOpen={isOpen} onClose={onClose} >
-        <RunningGoalInputModal onClose={onClose}/>
+        <RunningGoalInputModal className="relative" onClose={onClose}/>
       </Modal>
     </section>
   )   
