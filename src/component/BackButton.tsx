@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'; // next/navigation에서 useRouter 임포트
 import React from 'react';
 import Button from './Button';
+import Image from 'next/image';
 
 export default function BackButton() {
   const router = useRouter(); // useRouter 훅 초기화
@@ -16,7 +17,7 @@ export default function BackButton() {
       onClick={handleGoBack}
       className=""
     >
-    뒤로 가기
+      <Image src="/arrow_back.svg" width={24} height={24} alt="뒤로 가기"/>
     </Button>
   );
 }
