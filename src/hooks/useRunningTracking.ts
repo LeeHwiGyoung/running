@@ -19,6 +19,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
   const watchId = useRef<number|null>(null);
   const timeIntervalId = useRef(null);
   const measureIntervalId = useRef(null);
+  const wasRunningRef = useRef<boolean>(false);
   
 
   const getCurrentPath = (): UserPosition[] => {
@@ -40,12 +41,13 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
   }
 
   useEffect(()=> { //러닝 시작마다 세션 추가
-    if(isRunning){
+    if(isRunning && !wasRunningRef.current){
       const newSessionIndex = path.length;
       setRunningSession(newSessionIndex);
       setPath(prev => [...prev, []]);
     }
-  },[isRunning , path.length])
+    wasRunningRef.current = isRunning;
+  },[isRunning , path.length, setPath , setRunningSession])
 
 
   
@@ -91,7 +93,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
       } , (err) => {
         setError(err.message)
       }, {
-         enableHighAccuracy : true,
+         enableHighAccuracy : false,
          maximumAge : 0,
          timeout : 5000,
       })
