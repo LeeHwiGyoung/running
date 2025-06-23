@@ -19,7 +19,7 @@ export default function RunningGoal({className=""} : RunningGoalProps) {
     <section className={`${className}`}>
       <h3 className='sr-only'>러닝 목표</h3>
       <Button onClick={onOpen}>{runningGoal===null ? 0 : runningGoal}</Button>
-      <div className='w-full border'></div>
+      <div className='w-full border after:absolute after:left-[50%] after:translate-x-[-50%] after:content-["킬로미터"] after:text-sm after:mt-1 after:font-normal'></div>
       <Modal className={'z-100'} isOpen={isOpen} onClose={onClose} >
         <RunningGoalInputModal className="relative" onClose={onClose}/>
       </Modal>
