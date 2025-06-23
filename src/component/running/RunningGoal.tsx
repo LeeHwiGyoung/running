@@ -1,10 +1,11 @@
 'use client';
 import React from 'react'
-import Button from '../ui/Button'
+
 import { useRunningStore } from '@/store/useRunningStore';
 import RunningGoalInputModal from './RunningGoalInputModal';
 import useModal from '@/hooks/useModal';
 import Modal from '../Modal';
+import Button from '../Button';
 
 interface RunningGoalProps {
   className ?: string;

@@ -1,5 +1,5 @@
 import DetailRunCard from '@/component/dashboard/DetailRunCard'
-import BackButton from '@/component/ui/BackButton'
+import BackButton from '@/component/BackButton'
 import React from 'react'
 
 const dummyDetail = {
@@ -17,16 +17,16 @@ const dummyDetail = {
 export default function page() {  
   return (
     <main>
-        <BackButton />
-        <DetailRunCard 
-         date={dummyDetail.date}
-         title={dummyDetail.title}
-         distance={dummyDetail.distance}
-         distanceLabel={dummyDetail.distanceLabel}
-         runningPace={dummyDetail.runningPace}
-         runningTime={dummyDetail.runningTime}
-         cadence={dummyDetail.cadence} 
-         />
+      <BackButton />
+      <DetailRunCard 
+        date={dummyDetail.date}
+        title={dummyDetail.title}
+        distance={dummyDetail.distance}
+        distanceLabel={dummyDetail.distanceLabel}
+        runningPace={dummyDetail.runningPace}
+        runningTime={dummyDetail.runningTime}
+        cadence={dummyDetail.cadence} 
+      />
     </main>
   )
 }
