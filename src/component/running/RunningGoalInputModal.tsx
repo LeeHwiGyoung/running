@@ -1,6 +1,7 @@
 'use client';
 import { useRunningStore } from "@/store/useRunningStore";
 import { useEffect, useRef } from "react";
+import Header from "../Header";
 
 interface RunningGoalInputModalProps {
   className ?: string
@@ -39,7 +40,10 @@ export default function RunningGoalInputModal( {className , onClose } : RunningG
   }, [])
 
   return (
-    <div className={className}>
+    <article className={className}>
+        <Header>
+          <h4>러닝 목표</h4>
+        </Header>
         <label htmlFor="runningGoal" className="sr-only" >
           목표 거리  
         </label>  
@@ -54,6 +58,6 @@ export default function RunningGoalInputModal( {className , onClose } : RunningG
          max={maxValue}
          onChange={onChangeGoal}
          onKeyDown={handleEnter} />
-    </div>
+    </article>
   )
 }

@@ -1,14 +1,15 @@
 import RunCardList from '@/component/dashboard/RunCardList'
 import Total from '@/component/dashboard/Total'
+import Header from '@/component/Header'
 import React from 'react'
 
 
 export default function page() {
   return (
     <>
-      <header className="py-4">
-        <h2 className="font-bold text-lg p-2">통계</h2>
-      </header>
+      <Header>
+        통계
+      </Header>
       <main className='mb-16'>
         <section>
             <Total/>
