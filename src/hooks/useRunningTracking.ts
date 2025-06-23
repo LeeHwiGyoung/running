@@ -13,17 +13,16 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
   const [avgPace ,setAvgPace] = useState<number|null>(null);
   //const [cadence , setCadence] = useState<number>(0);
   const [error , setError] = useState<string|null>(null);
-  const [runningSession , setRunningSession] = useState<number>(0);
-
+  
   const prevPositionRef = useRef<UserPosition|null>(null);
   const watchId = useRef<number|null>(null);
   const timeIntervalId = useRef(null);
   const measureIntervalId = useRef(null);
   const wasRunningRef = useRef<boolean>(false);
-  
+  const runningSessionRef = useRef<number>(0);
 
   const getCurrentPath = (): UserPosition[] => {
-    return path[runningSession] || [];
+    return path[runningSessionRef.current] || [];
   };
 
   const measureIntervalCallback = () => {
@@ -31,10 +30,10 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
       const newCurrentPosition = prevPositionRef.current;
       setPath((prevPath) => {
         const newPaths = [...prevPath];
-        if (!newPaths[runningSession]) {
-          newPaths[runningSession] = [];
+        if (!newPaths[runningSessionRef.current]) {
+          newPaths[runningSessionRef.current] = [];
         }
-        newPaths[runningSession] = [...newPaths[runningSession], newCurrentPosition];
+        newPaths[runningSessionRef.current] = [...newPaths[runningSessionRef.current], newCurrentPosition];
         return newPaths;
       });
     }
@@ -43,11 +42,11 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
   useEffect(()=> { //러닝 시작마다 세션 추가
     if(isRunning && !wasRunningRef.current){
       const newSessionIndex = path.length;
-      setRunningSession(newSessionIndex);
+      runningSessionRef.current = newSessionIndex;
       setPath(prev => [...prev, []]);
     }
     wasRunningRef.current = isRunning;
-  },[isRunning , path.length, setPath , setRunningSession])
+  },[isRunning , path.length, setPath])
 
 
   
@@ -63,11 +62,11 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
 
   useEffect(()=> { //path가 변경 될 때 마다 실행되는 useEffect
     const currentPath = getCurrentPath();
-    
+  
     if (currentPath.length < 2) {
       return;
     }
-   const prev = currentPath[currentPath.length - 2];
+    const prev = currentPath[currentPath.length - 2];
     const current = currentPath[currentPath.length - 1];
     const timeInterval = (current.timestamp - prev.timestamp) / 1000;
 
@@ -77,7 +76,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
     setDistance((prevDistance) => prevDistance + segmentDistance); //거리 업데이트
     setCurPace(curPaceValue) //순간 페이스 업데이트
     setAvgPace(avgPaceValue); //평균 페이스 업데이트
-   }, [path ,  runningSession]);
+   }, [path , runningSessionRef.current]);
 
 
   useEffect(()=> {
