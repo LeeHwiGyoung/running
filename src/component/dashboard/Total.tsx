@@ -37,9 +37,9 @@ export default function Total() {
   return (
     <section className='relative'>
       <h2 className='sr-only'>러닝 통계</h2>
-      <RunningInfo runCount={totalData.totalRunCount} distance={totalData.totalDistance} time={totalData.totalTime} />
-      <BarGraph data={runningData} xKey={'day'} yKey={'distance'} width={540} height={200} onClickBar={onClickBar} onClickOutside={onClickOutsideBar}/>
-      {selectedBar !== null && <RunningInfo className='absolute top-0 z-index-100 bg-white border' runCount={runningData[selectedBar].runCount} distance={runningData[selectedBar].distance} time={runningData[selectedBar].time}/>}
+      <RunningInfo className='rounded-sm border-gray-100 border shadow-[0px_2px_5px_rgba(0,0,0,0.1)]' runCount={totalData.totalRunCount} distance={totalData.totalDistance} time={totalData.totalTime} />
+      <BarGraph data={runningData} xKey={'day'} yKey={'distance'} width={540} height={200} marginBottom={30} onClickBar={onClickBar} onClickOutside={onClickOutsideBar} xAxisFontSize={16} yAxisFontSize={12} barColor={'#ADD8E6'} hoverBarColor={'#B0C4DE'}/>
+      {selectedBar !== null && <RunningInfo className='absolute top-0 z-index-100 bg-white rounded-sm border-gray-100 border shadow-[0px_2px_5px_rgba(0,0,0,0.1)]' runCount={runningData[selectedBar].runCount} distance={runningData[selectedBar].distance} time={runningData[selectedBar].time}/>}
     </section>
   )
 }
