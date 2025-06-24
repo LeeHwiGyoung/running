@@ -2,6 +2,7 @@ import DetailRunCard from '@/component/dashboard/DetailRunCard'
 import BackButton from '@/component/BackButton'
 import React from 'react'
 import Header from '@/component/Header'
+import DetailRunPerformaceView from '@/component/dashboard/DetailRunPerformaceView'
 
 const dummyDetail = {
     id: 0,
@@ -30,6 +31,9 @@ export default function page() {
         runningTime={dummyDetail.runningTime}
         cadence={dummyDetail.cadence} 
       />
+      <section className='mb-18'>
+        <DetailRunPerformaceView position={{latitude : 37.4504924 , longitude : 126.6849254}}/>
+      </section>
     </main>
   )
 }
