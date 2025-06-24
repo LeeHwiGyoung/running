@@ -55,16 +55,18 @@ export default function DetailRunCard({
   const count = useCountUp({target : distance})
   
   return (
-    <article className='px-4'>
-        <h2 className='text-2xl font-bold'>
-            {title}
-        </h2>
-        <time dateTime={date}>{date}</time> 
-        <div className='flex flex-col'>
-            <data className="text-7xl font-bold transition" value={distance}>{count.toFixed(2).toLocaleString()}</data>
-            <span>{distanceLabel}</span>
+    <article className='flex flex-col gap-4 px-4'>
+        <div>
+            <h2 className='text-xl font-bold'>
+                {title}
+            </h2>
+            <time className='text-gray-400' dateTime={date}>{date}</time> 
         </div>
-        <section className='flex mt-4'>
+        <div className='flex items-end text-5xl gap-1'>
+            <data className="font-bold" value={distance}>{count.toFixed(2).toLocaleString()}</data>
+            <span className='text-2xl'>{distanceLabel}</span>
+        </div>
+        <section className='flex'>
             <h3 className='sr-only'>러닝 통계</h3>
             <div className='flex flex-col grow-1'>
                 <data className="text-xl font-bold" value={runningPace}>{formatPace(runningPace)}</data>
