@@ -19,9 +19,9 @@ export default function CountDown() {
   }, [count, isCountDownRuninng, setTracking, setStep])
   
   return (
-    <article className='flex items-center justify-center w-full h-[100vh] bg-black'>
+    <article className='flex items-center justify-center w-full h-[calc(100dvh-3rem)] bg-[#2C2C2C]'>
         <h2 className='sr-only'>카운트 다운</h2>
-        <p key={count} className='text-white text-9xl animate-countdown'>{count}</p>
+        <p key={count} className='absolute top-[50%] left-[50%] translate-[-50%] text-white text-6xl animate-countdown'>{count}</p>
     </article>
   )
 }
