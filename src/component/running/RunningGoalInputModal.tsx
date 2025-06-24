@@ -73,6 +73,7 @@ export default function RunningGoalInputModal( {className = "" , onClose } : Run
             placeholder={'0'}
             value={curRunningGoal ?? ''}
             max={maxValue}
+            inputMode="decimal"
             onChange={onChangeGoal}
             onKeyDown={handleEnter} />
             <div className='w-full border after:absolute after:left-[50%] after:translate-x-[-50%] after:content-["킬로미터"] after:text-sm after:mt-1 after:font-normal'></div>
