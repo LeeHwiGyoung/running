@@ -13,18 +13,23 @@ interface RunningGoalInputModalProps {
 export default function RunningGoalInputModal( {className = "" , onClose } : RunningGoalInputModalProps) {
   const inputRef = useRef<HTMLInputElement| null>(null);
   const {runningGoal , setRunningGoal} = useRunningStore();  
-  const [curRunningGoal, setCurRunningGoal] = useState<number>(runningGoal); 
+  const [curRunningGoal, setCurRunningGoal] = useState<number|null>(runningGoal); 
   
   const maxValue = 100;
 
   const handleEnter = (e:React.KeyboardEvent) => {
     if(e.key === 'Enter'){
+      if(curRunningGoal) {
+        setRunningGoal(curRunningGoal);
+      }
       onClose();
     }
   }
   
   const onClickChangeButton = () => {
-    setRunningGoal(curRunningGoal);
+    if(curRunningGoal) {
+      setRunningGoal(curRunningGoal);
+    }
     onClose();
   }
   
