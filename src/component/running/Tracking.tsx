@@ -42,7 +42,7 @@ export default function Tracking() {
   
   const onClickStopBtn = () => {
     setTracking(false);
-    router.push('/');
+    router.push('/tracking/result');
   }
 
   const onClickStartBtn = () => {
