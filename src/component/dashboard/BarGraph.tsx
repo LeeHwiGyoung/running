@@ -138,13 +138,17 @@ export default function BarGraph({
             bars.attr('fill', barColor);
         }
 
-        // SVG 배경 클릭 시 처리
-        svg.on('click', () => {
+        const deselectAll = () => {
             clickedIndexRef.current = null;
             unShowClickedLine();
             if (onClickOutside) {
                 onClickOutside();
             }
+        }
+
+        // SVG 배경 클릭 시 처리
+        svg.on('click', () => {
+            deselectAll();
         });
 
         if(onClickBar) {
@@ -159,6 +163,15 @@ export default function BarGraph({
             })
         }
 
+        const handleClickOutside = (event: MouseEvent) => {
+            // 클릭된 요소가 svgRef 안에 포함되어 있지 않다면 외부 클릭으로 간주
+            if (svgRef.current && !svgRef.current.contains(event.target as Node)) {
+                deselectAll();
+            }
+        };
+
+        // document에 이벤트 리스너 추가
+        document.addEventListener('mousedown', handleClickOutside);
         // 리렌더링 후에도 클릭된 상태를 복원
         if (clickedIndexRef.current !== null) {
             const clickedData = data[clickedIndexRef.current];
@@ -171,6 +184,9 @@ export default function BarGraph({
             }
         }
 
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
     }, [data, xKey, yKey, width, height, marginLeft, marginRight, marginBottom, marginTop, onClickBar, onClickOutside, xAxisFontSize, yAxisFontSize, barColor, hoverBarColor]);
     
     return (
