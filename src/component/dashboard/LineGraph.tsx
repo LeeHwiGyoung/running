@@ -34,6 +34,10 @@ interface LineGraphProps {
     yKey : string;
     width: number;
     height : number;
+    xAxisFontSize ?: number;
+    yAxisFontSize ?: number;
+    lineColor ?: string;
+    lineWidth ?: number;
     marginTop ?: number;
     marginBottom ?: number;
     marginRight ?: number;
@@ -43,7 +47,7 @@ interface LineGraphProps {
     setButtonText : React.Dispatch<React.SetStateAction<string>>;
     setHoveredSegmentId : React.Dispatch<React.SetStateAction<number|null>>
 }
-export default function LineGraph({data , id , xKey , yKey ,reverseYAxis= false ,  width =400 ,height=200, marginBottom= 20, marginLeft=20, marginRight=20 , marginTop= 20 , setButtonText , setHoveredSegmentId, tickFormatFunc}:LineGraphProps) {
+export default function LineGraph({data , id , xKey , yKey ,reverseYAxis= false , xAxisFontSize= 16, yAxisFontSize = 16, lineColor = '#B0C4DE', lineWidth = 3, width =400 ,height=200, marginBottom= 20, marginLeft=20, marginRight=20 , marginTop= 20 , setButtonText , setHoveredSegmentId, tickFormatFunc}:LineGraphProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   
   useEffect(()=> {
@@ -83,38 +87,43 @@ export default function LineGraph({data , id , xKey , yKey ,reverseYAxis= false 
       .y(d => y(d.properties[yKey])) // Y 좌표
       .curve(d3.curveBasis);
 
-    svg
+    svg //x축 생성
     .append('g')
-    .attr('transform', `translate(0, ${height - marginBottom})`)
+    .attr('transform', `translate(0, ${height - marginBottom})`) 
     .call(d3.axisBottom(x).tickSizeOuter(0))
     .call(g => { g.selectAll('line').remove()})
     .style("-webkit-user-select", "none")
     .style("-moz-user-select", "none")
     .style("-ms-user-select", "none")
     .style("user-select", "none")
+    .selectAll('.tick text')
+    .attr('font-size' , `${xAxisFontSize}px`);
 
     
-    const yAxisSvg = svg.append("g")
+    const yAxisSvg = svg.append("g") //y축 생성
       .attr('transform', `translate(${marginLeft} , 0)`);
-    
+
       if(tickFormatFunc) {
         yAxisSvg.call(d3.axisLeft(y).ticks(5).tickFormat(d => tickFormatFunc(d as number)));
       }else{
         yAxisSvg.call(d3.axisLeft(y).ticks(5))
       }
       
-      yAxisSvg
+    yAxisSvg
       .style("-webkit-user-select", "none")
       .style("-moz-user-select", "none")
       .style("-ms-user-select", "none")
       .style("user-select", "none")
+      .selectAll('.tick text')
+      .attr('font-size' , `${yAxisFontSize}px`);
+
     
-    svg
+    svg //line 그래프 생성
     .append('path')
     .datum(processedData)
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 1.5)
+    .attr("stroke", `${lineColor}`)
+    .attr("stroke-width", `${lineWidth}`)
     .attr("d",line)
 
     
