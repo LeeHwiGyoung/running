@@ -565,11 +565,11 @@ export default function DetailRunPerformaceView({position} : DetailRunPerformace
     <>
         <KakaoMap className='w-full h-[200px]' mapId='detailMap' latitude={position.latitude} longitude={position.longitude} level={2} />
         <div className='flex gap-4 mt-4'>
-            <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-green-400 ${clickedButton === 'pace' ? 'bg-green-400' : 'bg-white'}`} onClick={()=> onClickButton('pace')}>
-                <span>평균 페이스 </span>
+            <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-[#B0C4DE] ${clickedButton === 'pace' ? 'bg-[#B0C4DE]' : 'bg-white'}`} onClick={()=> onClickButton('pace')}>
+                <span>페이스</span>
                 <span>{avgPace}</span>
             </Button>
-            <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-green-400 ${clickedButton === 'cadence' ? 'bg-green-400' : 'bg-white'}`} onClick={()=> onClickButton('cadence')}>
+            <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-[#B0C4DE] ${clickedButton === 'cadence' ? 'bg-[#B0C4DE]' : 'bg-white'}`} onClick={()=> onClickButton('cadence')}>
                 <span>케이던스</span>
                 <span>{avgCadence}</span>
             </Button>
@@ -584,7 +584,9 @@ export default function DetailRunPerformaceView({position} : DetailRunPerformace
                     reverseYAxis={true}
                     width={800}
                     height={400}
-                    marginLeft={40}
+                    marginLeft={60}
+                    yAxisFontSize={14}
+                    xAxisFontSize={14}
                     setButtonText={setAvgPace}
                     setHoveredSegmentId={setHoveredSegmentId}
                     tickFormatFunc={formatPace}
@@ -599,7 +601,9 @@ export default function DetailRunPerformaceView({position} : DetailRunPerformace
                     yKey={'averageCadence'}
                     width={800}
                     height={400}
-                    marginLeft={40}
+                    marginLeft={60}
+                    yAxisFontSize={14}
+                    xAxisFontSize={14}
                     setButtonText={setAvgCadence}
                     setHoveredSegmentId={setHoveredSegmentId}
                     tickFormatFunc={(value: number) => value.toFixed(0)} // 케이던스 포맷 함수를 직접 전달
