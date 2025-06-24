@@ -9,9 +9,10 @@ interface BottomNavItemProps {
     label : string;
     isActive : boolean;
     imageSrc : string;
+    activeColor : string;
 }
 
-export default function BottomNavItem({href , label, imageSrc } : BottomNavItemProps) {
+export default function BottomNavItem({href , label, imageSrc , isActive , activeColor } : BottomNavItemProps) {
   const router = useRouter();
   const {isTracking} = useRunningStore();
 
@@ -23,8 +24,9 @@ export default function BottomNavItem({href , label, imageSrc } : BottomNavItemP
       router.push(href);
     }
   };
+
   return (
-    <Button className='flex flex-col grow-1 items-center justify-center ' onClick={handleClick}>
+    <Button className={`flex flex-col grow-1 items-center justify-center ${isActive && activeColor}`} onClick={handleClick}>
         <Image src={imageSrc} alt="" width={24} height={24}/>
         <span>{label}</span>
     </Button>
