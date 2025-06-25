@@ -1,6 +1,7 @@
 import { calculateDistance, calculatePace } from '@/utils/calculate';
 import { PathPoint } from "@/types/running.types";
 import { create } from "zustand";
+import { UserPosition } from '@/types/type';
 
 interface RunningState {
     //러닝 준비 페이지
@@ -21,6 +22,7 @@ interface RunningState {
     //내부 관리용
     runningSessionIndex : number;
     currentPathSegment : PathPoint[];
+    error : string | null;
 }
 
 interface RunningActions {
@@ -36,10 +38,12 @@ interface RunningActions {
     resumeTracking : () => void;
     stopTracking : () => void;
 
+
     //useRunningTracking 에서 호출될 액션들
-    updateStats : (newPoint : PathPoint) => void;
+    updateStats : (newPoint : UserPosition) => void;
     incrementTime : () => void; // 시간 1초 증가
     resetRunningStat : () => void;
+    setError : (error : string) => void;
 }
 //스토어 생성
 export const useRunningStore = create<RunningState & RunningActions>((set , get) => ({
@@ -59,12 +63,14 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
     runningSessionIndex : 0,
     currentPathSegment : [],
 
+    error : null,
     //actions
     setRunningGoal: (value) => set({runningGoal : value }),
     setStep: (value)=> set({step: value}),
     setIsTracking : (value) => set({isTracking : value}),
     setIsRunningPaused : (value) => set({isRunningPaused: value}),
-    
+    setError : (value) => set({error: value}),
+
     startTraking : () => { //처음 시작할 때
         const newSessionIndex = get().path.length;
         set({
@@ -104,8 +110,10 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
     },
 
     resumeTracking : () => {
-        const newSessionIndex = get().path.length;
+        const state = get();
+        const newSessionIndex = state.path.length;
         set({
+            ...state,
             step : 0, // countdown 
             isRunningPaused : false,
             runningSessionIndex : newSessionIndex,
@@ -127,6 +135,7 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
             }
             
             return {
+                isTracking : false,
                 isRunningPaused : true,
                 path : newPath,
                 currentPathSegment : [],
@@ -136,7 +145,7 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
         console.log('러닝 종료됨')
     },
    
-    updateStats : (newPoint : PathPoint) => {
+    updateStats : (newUserPosition : UserPosition) => {
         set(state => {
             const lastPoint = state.currentPathSegment.length > 0 ? state.currentPathSegment[state.currentPathSegment.length - 1] : null;
             let segementDistance = 0;
@@ -146,9 +155,9 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
             if(lastPoint){
                 segementDistance = calculateDistance(
                     {latitude : lastPoint.latitude, longitude : lastPoint.longitude},
-                    {latitude : newPoint.latitude , longitude : newPoint.longitude}
+                    {latitude : newUserPosition.latitude , longitude : newUserPosition.longitude}
                 );
-                timeDiffseconds = (newPoint.timestamp - lastPoint.timestamp) / 1000;
+                timeDiffseconds = (newUserPosition.timestamp - lastPoint.timestamp) / 1000;
 
                 if(segementDistance > 0 && timeDiffseconds > 0) {
                     calculatedCurrentPace = calculatePace(segementDistance , timeDiffseconds)
@@ -157,7 +166,7 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
 
             const updateTotalDistance = state.totalDistance + segementDistance;
             const updatePoint : PathPoint = {
-                ...newPoint,
+                ...newUserPosition,
                 curDistance : updateTotalDistance,
                 curPace : calculatedCurrentPace
             }
