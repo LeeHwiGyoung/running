@@ -1,10 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCountDown } from '@/hooks/useCountDown'
-import { useRunningStore } from '@/store/useRunningStore';
 import React, { useEffect } from 'react'
 
-export default function CountDown() {
-  const { setTracking , setStep} = useRunningStore();
-  const {count ,startCountDown , isCountDownRuninng } = useCountDown({initCount : 3});
+interface CountDownDisplayProps {
+  onCountdownComplete : () => void;
+  initialCount ?: number;
+}
+
+export default function CountDownDisplay( {onCountdownComplete , initialCount = 3} : CountDownDisplayProps) {
+  const {count ,startCountDown , isCountDownRuninng  } = useCountDown({initCount : initialCount});
 
   useEffect(()=> {
     startCountDown();
@@ -13,10 +17,9 @@ export default function CountDown() {
   useEffect(() => {
     // 카운트다운이 끝나고 (count가 0이 되고) 더 이상 실행 중이 아닐 때만 tracking을 true로 설정합니다.
     if (count === 0 && !isCountDownRuninng) {
-      setTracking(true);
-      setStep(1);
+      onCountdownComplete();
     }
-  }, [count, isCountDownRuninng, setTracking, setStep])
+  }, [count, isCountDownRuninng, onCountdownComplete])
   
   return (
     <article className='flex items-center justify-center w-full h-[calc(100dvh-3rem)] bg-[#2C2C2C]'>
