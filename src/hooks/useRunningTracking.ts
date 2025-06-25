@@ -1,88 +1,69 @@
-import { UserPosition } from '@/types/type'
-import { calculateDistance, calculatePace } from '@/utils/calculate';
-import { useEffect, useRef, useState } from 'react'
-interface useRunningTrackingProps {
-  isRunning : boolean;
-}
+import { useRunningStore } from "@/store/useRunningStore";
+import { UserPosition } from "@/types/type";
+import { useEffect, useRef } from "react";
 
-export default function useRunningTracking({isRunning}:useRunningTrackingProps) {
-  const [path ,setPath] = useState<UserPosition[][]>([]);
-  const [distance , setDistance] = useState<number>(0);
-  const [time , setTime] = useState<number>(0);
-  const [curPace ,setCurPace] = useState<number|null>(null);
-  const [avgPace ,setAvgPace] = useState<number|null>(null);
-  //const [cadence , setCadence] = useState<number>(0);
-  const [error , setError] = useState<string|null>(null);
-  
-  const prevPositionRef = useRef<UserPosition|null>(null);
+export default function useRunningTracking() {
+  const {
+    isTracking,
+    isRunningPaused,
+    updateStats,
+    incrementTime,
+    setError,
+  } = useRunningStore()
   const watchId = useRef<number|null>(null);
   const timeIntervalId = useRef(null);
   const measureIntervalId = useRef(null);
-  const wasRunningRef = useRef<boolean>(false);
-  const runningSessionRef = useRef<number>(0);
-
-  const getCurrentPath = (): UserPosition[] => {
-    return path[runningSessionRef.current] || [];
-  };
-
-  const measureIntervalCallback = () => {
-    if(prevPositionRef.current) {
-      const newCurrentPosition = prevPositionRef.current;
-      setPath((prevPath) => {
-        const newPaths = [...prevPath];
-        if (!newPaths[runningSessionRef.current]) {
-          newPaths[runningSessionRef.current] = [];
-        }
-        newPaths[runningSessionRef.current] = [...newPaths[runningSessionRef.current], newCurrentPosition];
-        return newPaths;
-      });
-    }
-  }
-
-  useEffect(()=> { //러닝 시작마다 세션 추가
-    if(isRunning && !wasRunningRef.current){
-      const newSessionIndex = path.length;
-      runningSessionRef.current = newSessionIndex;
-      setPath(prev => [...prev, []]);
-    }
-    wasRunningRef.current = isRunning;
-  },[isRunning , path.length, setPath])
-
-
+  const prevPositionRef = useRef<UserPosition|null>(null);
   
-  useEffect(()=> { // 기록 측정 interval 마다 path 가 업데이트 되는 로직
-    if(!isRunning) return;
-    measureIntervalId.current = setInterval(measureIntervalCallback , 5000);  //5초마다 path 추가 
-    return () => {
-      if (measureIntervalId.current) {
-      clearInterval(measureIntervalId.current);
+ useEffect(() => {
+    //러닝 중이고 일시정지 상태가 아닐 때만 타이머 시작
+    if (isTracking && !isRunningPaused) {
+      if (!timeIntervalId.current) { // 이미 타이머가 돌고 있지 않다면
+        timeIntervalId.current = setInterval(() => {
+          incrementTime(); // Zustand 액션 호출
+        }, 1000);
+      }
+    } else {
+      //러닝이 중지되었거나, 일시정지 상태일 때 타이머 중지
+      if (timeIntervalId.current) {
+        clearInterval(timeIntervalId.current);
+        timeIntervalId.current = null; // 정리 후 null로 설정하여 다음 시작을 준비
       }
     }
-  }, [isRunning])
 
-  useEffect(()=> { //path가 변경 될 때 마다 실행되는 useEffect
-    const currentPath = getCurrentPath();
-  
-    if (currentPath.length < 2) {
-      return;
+    // 클린업 함수: 컴포넌트 언마운트 또는 의존성 변경 시 인터벌 정리
+    return () => {
+      if (timeIntervalId.current) {
+        clearInterval(timeIntervalId.current);
+        timeIntervalId.current = null;
+      }
+    };
+  }, [isTracking, isRunningPaused, incrementTime])
+
+  useEffect(() => {
+    if(isTracking&& !isRunningPaused){
+      if(!measureIntervalId.current){
+        measureIntervalId.current = setInterval(()=> updateStats(prevPositionRef.current), 5000);
+      }
+    }else {
+      if(measureIntervalId.current){
+        clearInterval(measureIntervalId.current);
+        measureIntervalId.current = null;
+      }
     }
-    const prev = currentPath[currentPath.length - 2];
-    const current = currentPath[currentPath.length - 1];
-    const timeInterval = (current.timestamp - prev.timestamp) / 1000;
+    
+    return () => {
+      if(measureIntervalId.current) {
+        clearInterval(measureIntervalId.current);
+        measureIntervalId.current = null;
+      }
+    }
+  }, [isRunningPaused, isTracking, updateStats])
 
-    const segmentDistance = calculateDistance({ latitude: prev.latitude, longitude: prev.longitude },{ latitude: current.latitude, longitude: current.longitude });
-    const curPaceValue = calculatePace(segmentDistance , timeInterval);
-    const avgPaceValue = calculatePace(distance + segmentDistance , time);
-    setDistance((prevDistance) => prevDistance + segmentDistance); //거리 업데이트
-    setCurPace(curPaceValue) //순간 페이스 업데이트
-    setAvgPace(avgPaceValue); //평균 페이스 업데이트
-   }, [path]);
-
-
-  useEffect(()=> {
+   useEffect(()=> {
     if (!navigator.geolocation) return;
-
-    if(isRunning) {
+    
+    if(!isRunningPaused) { //일시중지중에서도 위치는 파악하게
       watchId.current = navigator.geolocation.watchPosition((position)=> {
         prevPositionRef.current = { //현재 위치를 기록하고 있는 ref
           latitude : position.coords.latitude,
@@ -105,19 +86,7 @@ export default function useRunningTracking({isRunning}:useRunningTrackingProps) 
         watchId.current = null;
       }
     };
-  }, [isRunning])
-
-
-  useEffect(() => { // 순수하게 타임만을 계산하는 interval
-    if (!isRunning) return;
-    timeIntervalId.current = setInterval(() => {
-      setTime((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(timeIntervalId.current);
-  }, [isRunning]);
-
-  return {path ,curPace , avgPace , distance , time , error }
+  }, [isRunningPaused, setError])
 }
 
 
