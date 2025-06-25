@@ -1,29 +1,28 @@
 'use client';
 import { formatPace, formatTime } from '@/utils/format';
-import React, { useEffect } from 'react'
+import React from 'react'
 import Button from '../Button';
 import TrackingCarousel from './TrackingCarousel';
 import { CarouselData } from '@/types/type';
 import { useRunningStore } from '@/store/useRunningStore';
-import useRunningTracking from '@/hooks/useRunningTracking';
-import CountDown from '../CountDown';
 import { useRouter } from 'next/navigation';
+import CountDownDisplay from '../CountDownDisplay';
 
 export default function Tracking() {
   const router = useRouter();
-  const {isTracking , setTracking , step, setStep} = useRunningStore();
-  const {avgPace , curPace , distance , time } = useRunningTracking({isRunning : isTracking});
+  const {totalDistance , currentPace , averagePace , totalTime ,isRunningPaused, resumeTracking ,startTraking, isTracking  , step,  setStep , stopTracking ,pauseTracking } = useRunningStore();
+  
   const carouselData:CarouselData[] = [
     {
-        value : distance.toFixed(2), 
+        value : totalDistance.toFixed(2), 
         label : '킬로미터'
     },
     {
-        value : formatPace(curPace), 
+        value : formatPace(currentPace), 
         label : '현재 페이스'
     },
     {
-        value : formatPace(avgPace), 
+        value : formatPace(averagePace), 
         label : '평균 페이스'
     },
     {
@@ -31,40 +30,44 @@ export default function Tracking() {
         label : '케이던스'
     },
     {
-        value : formatTime(time), 
+        value : formatTime(totalTime), 
         label : '달린 시간'
     }
   ]
 
   const onClickPauseBtn = () => {
-    setTracking(false)
+    pauseTracking();
   } 
   
   const onClickStopBtn = () => {
-    setTracking(false);
+    stopTracking();
     router.push('/tracking/result');
   }
 
-  const onClickStartBtn = () => {
+  const onClickRestartBtn = () => {
     setStep(0);
   }
-
-  useEffect(()=> {
-    return ()=> {
-        setStep(0);
+  
+  const handleCountDownComplete = () => {
+    if(isTracking && isRunningPaused) {
+        resumeTracking();
+    }else {
+        startTraking();
     }
-  }, [])
+    setStep(1);
+  }
+
 
   return ( 
     <>
-    {step === 0 && <CountDown />}
+    {step === 0 && <CountDownDisplay initialCount={3} onCountdownComplete={handleCountDownComplete}/>}
     {step === 1 && 
     <article className='py-4'>
         <h2 className='sr-only'>현재 러닝</h2>
         <section className='flex font-bold'>
             <h3 className='sr-only'>러닝 개요</h3>
             <div className='grow-1 flex flex-col items-center justify-center'>
-                <p>{formatPace(curPace)}</p>
+                <p>{formatPace(currentPace)}</p>
                 <span className='font-normal text-gray-400'>현재 페이스</span>
             </div>
             <div className='grow-1 flex flex-col items-center justify-center'>
@@ -72,7 +75,7 @@ export default function Tracking() {
                 <span className='font-normal text-gray-400'>케이던스</span>
             </div>
             <div className='grow-1 flex flex-col items-center justify-center'>
-                <p>{formatPace(avgPace)}</p>
+                <p>{formatPace(averagePace)}</p>
                 <span className='font-normal text-gray-400'>평균 페이스</span>
             </div>
         </section>
@@ -82,7 +85,7 @@ export default function Tracking() {
         </section>
         <section className='flex items-center justify-center mb-12'>
             <h3 className='sr-only'>측정 메뉴</h3>
-            { isTracking ?
+            { !isRunningPaused ?
                 <div>
                     <Button className='bg-black p-8 rounded-full text-white' onClick={onClickPauseBtn}>
                         중지
@@ -93,7 +96,7 @@ export default function Tracking() {
                     <Button className='bg-black p-8 rounded-full text-white' onClick={onClickStopBtn}>
                         정지
                     </Button>
-                    <Button className='bg-black p-8 rounded-full text-white' onClick={onClickStartBtn}>
+                    <Button className='bg-black p-8 rounded-full text-white' onClick={onClickRestartBtn}>
                         시작
                     </Button>
                 </div>
