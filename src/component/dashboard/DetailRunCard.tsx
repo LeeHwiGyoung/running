@@ -75,7 +75,7 @@ export default function DetailRunCard({
                 </Button>
                 </div>
             :
-            <h2 className='flex text-xl font-bold border-gray-200 border-b-2 py-2'>
+            <h2 className={`flex text-xl font-bold py-2 ${isEditable && 'border-gray-200 border-b-2'}`}>
                 {title}
                 {isEditable && (
                     <Button className='ml-auto' onClick={handleEditTitleBtn}>
@@ -89,19 +89,19 @@ export default function DetailRunCard({
             <data className="font-bold" value={distance}>{count.toFixed(2).toLocaleString()}</data>
             <span className='text-2xl'>{distanceLabel}</span>
         </div>
-        <section className='flex'>
+        <section className='flex mt-2 mb-6'>
             <h3 className='sr-only'>러닝 통계</h3>
             <div className='flex flex-col grow-1'>
                 <data className="text-xl font-bold" value={runningPace}>{formatPace(runningPace)}</data>
-                <span>평균 페이스</span>
+                <span className='text-gray-400'>평균 페이스</span>
             </div>
             <div className='flex flex-col grow-1'>
                 <data className="text-xl font-bold" value={runningTime}>{formatTime(runningTime)}</data>
-                <span>시간</span>
+                <span className='text-gray-400'>시간</span>
             </div>
             <div className='flex flex-col grow-1'>
                 <data className="text-xl font-bold" value={cadence}>{cadence}</data>
-                <span>케이던스</span>
+                <span className='text-gray-400'>케이던스</span>
             </div>
         </section>
     </article>
