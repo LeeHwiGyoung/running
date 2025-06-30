@@ -10,6 +10,7 @@ export async function POST(request:NextRequest) {
         const userRecord = await authAdmin.createUser({
             email : email,
             password : password,
+            displayName : nickname,
         })
         const userCollectionRef =  firestoreAdmin.collection('users');
 
