@@ -12,7 +12,9 @@ export default function Button({children, onClick , className="", type = 'button
   const lastClassName = baseClassName + className;
   
   const onClickBtn = () => {
-    onClick();
+    if (onClick) {
+      onClick();
+    }
   }
 
   return (
