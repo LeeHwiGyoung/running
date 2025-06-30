@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react'
-import Header from '../Header'
 import AuthInput from './AuthInput'
 import Button from '../Button';
 import { useSignup } from '@/hooks/useSignup';
+import AuthHeader from './AuthHeader';
 
 export default function Signup() {
   const [email , setEmail] = useState<string>("");
@@ -11,6 +11,7 @@ export default function Signup() {
   const [nickname , setNickname] = useState<string>("");
 
   const { signup, isLoading} = useSignup();
+
   const handleChangeEmail = (event : React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setEmail(newValue);
@@ -41,9 +42,9 @@ export default function Signup() {
 
   return (
     <article className='relative h-[calc(100dvh-4rem)]'>
-        <Header>
+        <AuthHeader>
             <h1>회원가입</h1>
-        </Header>
+        </AuthHeader>
         <form 
          className='px-4'
          onSubmit={handleSubmit}

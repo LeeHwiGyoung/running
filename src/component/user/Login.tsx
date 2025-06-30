@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react'
-import Header from '../Header'
 import AuthInput from './AuthInput'
 import Button from '../Button';
 import { useLogin } from '@/hooks/useLogin';
+import AuthHeader from './AuthHeader';
 
 export default function Login() {
   const [email , setEmail] = useState<string>("");
@@ -36,9 +36,9 @@ export default function Login() {
 
   return (
     <article className='relative h-[calc(100dvh-4rem)]'>
-        <Header>
+        <AuthHeader>
             <h1>로그인</h1>
-        </Header>
+        </AuthHeader>
         <form className='px-4' onSubmit={handleLogin}>
           <AuthInput
           value={email}

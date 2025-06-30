@@ -1,14 +1,14 @@
-import Header from "@/component/Header";
 import KaKaoMapWithCheckPosition from "@/component/KakaoMapWithCheckPosition";
 import RunningGoal from "@/component/running/RunningGoal";
 import RunningMenu from "@/component/running/RunningMenu";
+import AuthHeader from "@/component/user/AuthHeader";
 
 export default function Home() {
   return (
     <>
-     <Header>
-      <h2>러닝</h2>
-     </Header>
+     <AuthHeader menuPosition="right">
+      <h1>러닝</h1>
+     </AuthHeader>
      <main className="relative w-full h-[calc(100dvh-7.7rem)] overflow-hidden">
         <RunningGoal className="flex flex-col font-bold text-2xl absolute z-100 top-20 right-[50%] translate-[50%] w-[50%] max-w-[20rem]"/>
         <RunningMenu className="absolute z-100 bottom-20 right-[50%] translate-[50%]"/>
