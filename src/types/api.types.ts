@@ -4,3 +4,14 @@ export interface SaveRunningResultRequestBody {
     runData : RunningSummaryForSave;
     pathPoints : PathPoint[];
 }
+
+export interface SignUpPayload {
+    email : string;
+    password : string;
+    nickname : string;  
+}
+
+export interface LoginPayload {
+    email : string;
+    password : string;
+}
