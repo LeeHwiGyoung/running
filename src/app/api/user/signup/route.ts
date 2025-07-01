@@ -13,11 +13,17 @@ export async function POST(request:NextRequest) {
             displayName : nickname,
         })
         const userCollectionRef =  firestoreAdmin.collection('users');
+        const userRunCounterRef = firestoreAdmin.collection('userRunCounter').doc(userRecord.uid);
 
         await userCollectionRef.doc(userRecord.uid).set({
             email,
             nickname,
             createdAt : Timestamp.now()
+        })
+        
+        await userRunCounterRef.set({
+            uid : userRecord.uid,
+            runCount : 0,
         })
 
         return NextResponse.json({message : '성공적으로 회원가입이 되었습니다'}, {status : 201})
