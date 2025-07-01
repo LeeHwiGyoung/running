@@ -1,39 +1,51 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ErrorType } from "@/types/api.types";
+import { setSessionCookie } from "../../../../../lib/firebase/setSessionCookie";
 import { authAdmin } from "../../../../../lib/firebase/admin";
-import { cookies} from "next/headers";
 
 export async function POST(request: NextRequest) {
     try {
         const authorization = request.headers.get('authorization');
+        
         if(!authorization || !authorization.startsWith('Bearer ')) {
-            return NextResponse.json({ message: 'Authorization 헤더가 누락되었거나 유효하지 않습니다.' },{ status: 401 });
+            const error = new Error as ErrorType;
+            error.cause = "BadRequest";
+            error.code = "login/header-error";
+            throw error;
         }
+
         const idToken = authorization.split('Bearer')[1].trim();
+        
         if (!idToken) {
-            return NextResponse.json({ message: 'ID 토큰이 필요합니다.' }, { status: 400 });
+            const error = new Error as ErrorType;
+            error.cause = "BadRequest";
+            error.code = "login/argument-error";
+            throw error;        
         }       
+
+
         const decodedToken = await authAdmin.verifyIdToken(idToken);
         const nickname = decodedToken.name;
         const expiresIn = 60 * 60 * 1000; // 1시간
-        const sessionCookie = await authAdmin.createSessionCookie(idToken, { expiresIn });
-        // 3. 세션 쿠키를 응답 헤더에 설정하여 클라이언트에게 보냅니다.
-        // Next.js App Router에서는 `cookies()` 함수를 사용합니다.
-        (await cookies()).set('session' , sessionCookie , {
-            maxAge: expiresIn,
-            httpOnly: true, // JavaScript로 접근 불가 (XSS 공격 방지)
-            secure: process.env.NODE_ENV === 'production', // HTTPS에서만 전송 (운영 환경)
-            sameSite: 'strict',
-            path: '/', // 모든 경로에서 쿠키 접근 가능
-        })
+     
+        await setSessionCookie(idToken, expiresIn);
 
         return NextResponse.json({ message: '로그인 성공'  , nickname : nickname}, { status: 200 });
 
     } catch (error) {
-        console.error('로그인 API 오류:', error);
-        // 토큰 검증 실패 시 오류 처리
-        if (error.code === 'auth/id-token-expired' || error.code === 'auth/invalid-id-token') {
-            return NextResponse.json({ message: '로그인 세션이 만료되었거나 유효하지 않습니다.' }, { status: 401 });
+        const err = error as ErrorType;
+
+        // Firebase ID 토큰 검증 오류 처리
+        if (err.code === 'auth/id-token-expired' || err.code === 'auth/invalid-id-token' || err.code === 'auth/argument-error') {
+            return NextResponse.json({ message: '로그인 세션이 만료되었거나 유효하지 않습니다.', code: err.code }, { status: 401 });
         }
-        return NextResponse.json({ message: '서버 오류가 발생했습니다.' }, { status: 500 });
+        
+        // 커스텀 에러 처리
+        if (err.cause === 'BadRequest') {
+            return NextResponse.json({ message: err.message, code: err.code }, { status: 400 });
+        }
+        
+        //이외의 서버 에러
+        return NextResponse.json({ message: '서버 오류가 발생했습니다.', code: 'SERVER_ERROR' }, { status: 500 });
     }
 }
