@@ -15,3 +15,9 @@ export interface LoginPayload {
     email : string;
     password : string;
 }
+
+export interface ErrorType extends Error {
+    cause : "AuthenticationError" | "AuthorizationError" | "BadRequest" | "NotFoundError";
+    code ?: string;
+    status ?: number;
+}
