@@ -1,15 +1,12 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { authAdmin, firestoreAdmin } from "../../../../../lib/firebase/admin";
+import { authenticate } from "../../../../../lib/firebase/auth-middleware";
+import { ErrorType } from "@/types/api.types";
 
 export async function Delete() {
     try {
-        const cookie = await cookies();
-        const idToken = cookie?.get('session')?.value;
-
-        const verifyIdToken = await authAdmin.verifySessionCookie(idToken, true);
-
-        const uid = verifyIdToken.uid;
+        const decodedToken = await authenticate();
+        const uid = decodedToken.uid;
 
         const userDocRef = firestoreAdmin.collection('users').doc(uid);
         const userRunCounterDoc = firestoreAdmin.collection('userRunCounter').doc(uid);
@@ -19,7 +16,7 @@ export async function Delete() {
         runsDocs.forEach(runDoc => deletePromiseRunsDoc.push(firestoreAdmin.recursiveDelete(runDoc.ref)));
 
         const result = await Promise.allSettled(deletePromiseRunsDoc);
-        const failedResult = result.map((doc) => doc.status === 'rejected');
+        const failedResult = result.filter((doc) => doc.status === 'rejected');
 
         if(failedResult.length > 0) {
             return NextResponse.json({ message : '회원 탈퇴 중 오류가 발생했습니다.', status :500 })
@@ -33,7 +30,18 @@ export async function Delete() {
         return NextResponse.json({message :'성공적으로 회원 탈퇴를 했습니다.', status : 204})
 
     }catch (error) {
-        console.log(error);
-        return NextResponse.json(`server Error ${error}`)
+        const err = error as ErrorType;
+        // 인증 오류인 경우 401 Unauthorized 응답을 반환합니다.
+        if (err.cause === 'AuthenticationError') {
+            return NextResponse.json(
+                { message: err.message, code: err.code },
+                { status: 401 }
+            );
+        }
+
+        return NextResponse.json(
+            { message: '서버 오류가 발생했습니다. 다시 시도해 주세요.', code: 'SERVER_ERROR' },
+            { status: 500 }
+        );
     }
 }
