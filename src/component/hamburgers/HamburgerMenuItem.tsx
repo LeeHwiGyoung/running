@@ -9,8 +9,8 @@ interface HamburgerMenuItemProps {
 
 export default function HamburgerMenuItem({text ,href, onClick} : HamburgerMenuItemProps) {
   return (
-    <li role="menuitem" className='w-full'>
-        <Link href={href} className='block p-3 w-full hover:bg-gray-100 text-center rounded-md' onClick={onClick}>
+    <li role="menuitem" className='w-full' onClick={onClick}>
+        <Link href={href} className='block p-3 w-full hover:bg-gray-100 text-center rounded-md'>
             {text}
         </Link>
     </li>
