@@ -10,7 +10,8 @@ export const useLogin = () => {
     const [isLoading , setIsLoading] = useState<boolean>(false);
     const [error ,setError] = useState<string | null> (null);
 
-    const setUser = useAuthStore(state => state.setUser);;
+    const setUser = useAuthStore(state => state.setUser);
+    const setIsLoggedIn = useAuthStore(state => state.setIsLoggedIn);
     const router = useRouter();
 
     const clientAuth = auth;
@@ -22,7 +23,7 @@ export const useLogin = () => {
             const user = userCredential.user;
             const userIdToken = await user.getIdToken();
 
-            const response = await fetch('api/user/login', {
+            const response = await fetch('api/auth/login', {
                 method : 'POST',
                 headers : {
                     'Authorization': `Bearer ${userIdToken}`
@@ -30,7 +31,8 @@ export const useLogin = () => {
             })
             if(response.ok){
                 const result = await response.json();
-                setUser({email , nickname : result.name})
+                setUser({email , nickname : result.name});
+                setIsLoggedIn(true);
                 //router.push('/')
                 console.log('로그인 성공:', result.message);
             }else {
