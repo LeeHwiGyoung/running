@@ -12,22 +12,21 @@ interface DetailRunCardProps {
     distanceLabel : string,
     runningPace : number,
     runningTime : number,
-    cadence : number,
     isEditable ?: boolean,
     handleChangeTitle ?: (newTitle : string) => void;
 }
 
 export default function DetailRunCard({
-    date,
+    date,   
     title,
     distance,
     distanceLabel,
     runningPace,
     runningTime,
-    cadence,
     isEditable = false,
     handleChangeTitle,
 }:DetailRunCardProps) {
+
   const count = useCountUp({target : distance})
   const [isEdit , setIsEdit] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>(title);
@@ -50,7 +49,7 @@ export default function DetailRunCard({
     setEditTitle(event.target.value);
   }
 
-  useEffect(()=> {
+  useEffect(()=> { //edit 모드일 때 title input 에 포커싱이 가게 하기 위함
     if(isEdit === true) {
         titleRef.current.focus();
     }
@@ -99,10 +98,10 @@ export default function DetailRunCard({
                 <data className="text-xl font-bold" value={runningTime}>{formatTime(runningTime)}</data>
                 <span className='text-gray-400'>시간</span>
             </div>
-            <div className='flex flex-col grow-1'>
+        {/*     <div className='flex flex-col grow-1'>
                 <data className="text-xl font-bold" value={cadence}>{cadence}</data>
                 <span className='text-gray-400'>케이던스</span>
-            </div>
+            </div> */}
         </section>
     </article>
   )
