@@ -1,3 +1,16 @@
+export interface RunningData {
+    id : number | string;
+    runTitle : string;
+    date : string;
+    startTime : number;
+    endTime :number;
+    totalDistance : number;
+    totalRunningTimeSecond : number;
+    avgPace : number;
+    dayOfWeek : string;
+    userRunCount: number;
+}
+
 export interface RunningSummaryForSave {
     runTitle : string;
     date : string;
@@ -6,8 +19,6 @@ export interface RunningSummaryForSave {
     totalDistance : number;
     totalRunningTimeSecond : number;
     avgPace : number;
-    centerMapLat : number;
-    centerMapLng : number;
     dayOfWeek : string;
 }
 
