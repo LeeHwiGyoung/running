@@ -19,7 +19,7 @@ export default function RunCard({className="" ,date , title ,distance , distance
         <section className='flex gap-4 mt-2'>
             <h5 className='sr-only'>러닝 통계</h5>
             <div className='flex flex-col grow-1 justify-center items-center'>
-                <data className="text-xl font-bold" value={distance}>{distance}</data>
+                <data className="text-xl font-bold" value={distance}>{distance.toFixed(2)}</data>
                 <span>{distanceLabel}</span>
             </div>
             <div className='flex flex-col grow-1 justify-center items-center'>
