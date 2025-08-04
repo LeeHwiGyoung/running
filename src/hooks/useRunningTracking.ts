@@ -1,5 +1,5 @@
 import { useRunningStore } from "@/store/useRunningStore";
-import { UserPosition } from "@/types/type";
+import { Coordinate } from "@/types/type";
 import { useEffect, useRef } from "react";
 
 export default function useRunningTracking() {
@@ -13,7 +13,7 @@ export default function useRunningTracking() {
   const watchId = useRef<number|null>(null);
   const timeIntervalId = useRef(null);
   const measureIntervalId = useRef(null);
-  const prevPositionRef = useRef<UserPosition|null>(null);
+  const prevPositionRef = useRef<Coordinate|null>(null);
   
  useEffect(() => {
     //러닝 중이고 일시정지 상태가 아닐 때만 타이머 시작
@@ -68,14 +68,13 @@ export default function useRunningTracking() {
         prevPositionRef.current = { //현재 위치를 기록하고 있는 ref
           latitude : position.coords.latitude,
           longitude: position.coords.longitude,
-          timestamp : position.timestamp
         }
       } , (err) => {
         setError(err.message)
       }, {
          enableHighAccuracy : true,
          maximumAge : 0,
-         timeout : 5000,
+         timeout : 1000,
       })
     }
 
