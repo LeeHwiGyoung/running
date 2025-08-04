@@ -26,3 +26,29 @@ export const formatTime = (time :number) => {
     return `${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 }
   
+
+export const formatTimestampToYYYYMMDD = (timestamp: number): string => {
+    const date = new Date(timestamp);
+
+    // 년도 가져오기 (YYYY)
+    const year = date.getFullYear();
+
+    // 월 가져오기 (MM), getMonth()는 0부터 시작하므로 1을 더하고 두 자리로 포맷팅
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+
+    // 일 가져오기 (DD), 두 자리로 포맷팅
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+export const formatTimestampToDayOfWeek = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  
+  const dayOfWeekIndex = date.getDay();
+
+  const days = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+
+  const adjustedIndex = dayOfWeekIndex === 0 ? 6 : dayOfWeekIndex - 1;
+
+  return days[adjustedIndex];
+};
