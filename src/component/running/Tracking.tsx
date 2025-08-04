@@ -26,10 +26,6 @@ export default function Tracking() {
         label : '평균 페이스'
     },
     {
-        value : 0, 
-        label : '케이던스'
-    },
-    {
         value : formatTime(totalTime), 
         label : '달린 시간'
     }
