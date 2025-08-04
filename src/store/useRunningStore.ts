@@ -1,7 +1,7 @@
 import { calculateDistance, calculatePace } from '@/utils/calculate';
 import { PathPoint } from "@/types/running.types";
 import { create } from "zustand";
-import { UserPosition } from '@/types/type';
+import { Coordinate } from '@/types/type';
 
 interface RunningState {
     //러닝 준비 페이지
@@ -40,7 +40,7 @@ interface RunningActions {
 
 
     //useRunningTracking 에서 호출될 액션들
-    updateStats : (newPoint : UserPosition) => void;
+    updateStats : (newPoint : Coordinate) => void;
     incrementTime : () => void; // 시간 1초 증가
     resetRunningStat : () => void;
     setError : (error : string) => void;
@@ -145,19 +145,19 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
         console.log('러닝 종료됨')
     },
    
-    updateStats : (newUserPosition : UserPosition) => {
+    updateStats : (newUserPosition : Coordinate) => {
         set(state => {
             const lastPoint = state.currentPathSegment.length > 0 ? state.currentPathSegment[state.currentPathSegment.length - 1] : null;
             let segementDistance = 0;
             let timeDiffseconds = 0;
             let calculatedCurrentPace:number|null = null;
-            
+            const newUserPositionTimeStamp = Date.now();
             if(lastPoint){
                 segementDistance = calculateDistance(
                     {latitude : lastPoint.latitude, longitude : lastPoint.longitude},
                     {latitude : newUserPosition.latitude , longitude : newUserPosition.longitude}
                 );
-                timeDiffseconds = (newUserPosition.timestamp - lastPoint.timestamp) / 1000;
+                timeDiffseconds = (newUserPositionTimeStamp - lastPoint.timestamp) / 1000;
 
                 if(segementDistance > 0 && timeDiffseconds > 0) {
                     calculatedCurrentPace = calculatePace(segementDistance , timeDiffseconds)
@@ -168,7 +168,8 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
             const updatePoint : PathPoint = {
                 ...newUserPosition,
                 curDistance : updateTotalDistance,
-                curPace : calculatedCurrentPace
+                curPace : calculatedCurrentPace,
+                timestamp : newUserPositionTimeStamp,
             }
 
             const newCurrentPathSegment = [...state.currentPathSegment , updatePoint];
