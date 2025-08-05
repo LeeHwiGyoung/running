@@ -41,11 +41,8 @@ export const formatTimestampToYYYYMMDD = (timestamp: number): string => {
 
     return `${year}-${month}-${day}`;
 }
-export const formatTimestampToDayOfWeek = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  
-  const dayOfWeekIndex = date.getDay();
 
+export const formatDayOfWeek = (dayOfWeekIndex: number): string => {
   const days = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
   const adjustedIndex = dayOfWeekIndex === 0 ? 6 : dayOfWeekIndex - 1;
