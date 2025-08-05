@@ -8,21 +8,23 @@ interface AuthInputProps {
   type : "email" | "password" | "text"
   name : string;
   id : string;
+  placeholder ?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; 
 }
 
-export default function AuthInput({className , labelStyle , value , onChange , type , label , name , id} : AuthInputProps) {
+export default function AuthInput({className , labelStyle , value , onChange , type , label , name , id ,placeholder} : AuthInputProps) {
 
   return (
-    <div>
+    <div className={`${className}`}>
         <label className={labelStyle} htmlFor={id}>{label}</label>
         <input 
-          className={`w-full border-b-2 border-gray-400 p-2 ${className}`}
+          className={`w-full border-2 border-gray-400 rounded-md p-2`}
           name={name}
           id={id}
           type={type}
           onChange={onChange}
           value={value}
+          placeholder={placeholder}
         />
     </div>
   )
