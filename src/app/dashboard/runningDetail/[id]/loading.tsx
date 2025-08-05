@@ -1,6 +1,6 @@
 import BackButton from "@/component/BackButton";
-import { DetailRunCardSkeleton } from "@/component/dashboard/skeleton/DetailRunCardSkeleton";
-import { DetailRunPerformanceViewSkeleton } from "@/component/dashboard/skeleton/DetailRunPerformanceViewSkeleton";
+import { DetailRunCardSkeleton } from "@/component/skeleton/DetailRunCardSkeleton";
+import { DetailRunPerformanceViewSkeleton } from "@/component/skeleton/DetailRunPerformanceViewSkeleton";
 import Header from "@/component/Header";
 
 export default function Loading() {
