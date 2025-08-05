@@ -3,7 +3,7 @@ import React from 'react'
 
 interface ButtonProps {
     children ?: React.ReactNode;
-    onClick ?: () => void;
+    onClick ?: React.MouseEventHandler<HTMLButtonElement>;
     className ?: string;
     type ?: 'button' | 'submit' | 'reset';
 }
@@ -11,9 +11,9 @@ export default function Button({children, onClick , className="", type = 'button
   const baseClassName = 'flex justify-center items-center cursor-pointer ';
   const lastClassName = baseClassName + className;
   
-  const onClickBtn = () => {
+  const onClickBtn = (event : React.MouseEvent<HTMLButtonElement>) => {
     if (onClick) {
-      onClick();
+      onClick(event);
     }
   }
 
