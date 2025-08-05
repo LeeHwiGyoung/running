@@ -1,4 +1,5 @@
-import RunCardList from '@/component/dashboard/RunCardList'
+
+import RunCardListFetcher from '@/component/dashboard/RunCardListFetcher'
 import Total from '@/component/dashboard/Total'
 import Header from '@/component/Header'
 import AuthHeader from '@/component/user/AuthHeader'
@@ -16,8 +17,8 @@ export default function page() {
         <section>
           <Header>
             <h3>최근 활동</h3>
-          </Header>
-          <RunCardList /> 
+          </Header>  
+          <RunCardListFetcher/> 
         </section>
       </main>
     </>
