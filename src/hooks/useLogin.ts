@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { auth } from "../../lib/firebase/client";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
-export const useLogin = () => {
+interface useLoginProps {
+    redirectUrl : string;
+}
+export const useLogin = ({redirectUrl} : useLoginProps) => {
     const [isLoading , setIsLoading] = useState<boolean>(false);
     const [error ,setError] = useState<string | null> (null);
 
@@ -33,7 +35,11 @@ export const useLogin = () => {
                 const result = await response.json();
                 setUser({email , nickname : result.name});
                 setIsLoggedIn(true);
-                //router.push('/')
+                if(redirectUrl == `${process.env.NEXT_PUBLIC_BASE_URL}/login`){
+                   router.push('/');   
+                 }else {
+                     router.push(`${redirectUrl}`);
+                 }
                 console.log('로그인 성공:', result.message);
             }else {
                 const errorData = await response.json(); // 서버에서 보낸 에러 메시지를 파싱
