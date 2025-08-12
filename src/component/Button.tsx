@@ -6,8 +6,9 @@ interface ButtonProps {
     onClick ?: React.MouseEventHandler<HTMLButtonElement>;
     className ?: string;
     type ?: 'button' | 'submit' | 'reset';
+    disabled ?: boolean;
 }
-export default function Button({children, onClick , className="", type = 'button'} : ButtonProps) {
+export default function Button({children, onClick , className="", type = 'button' , disabled=false} : ButtonProps) {
   const baseClassName = 'flex justify-center items-center cursor-pointer ';
   const lastClassName = baseClassName + className;
   
@@ -18,7 +19,7 @@ export default function Button({children, onClick , className="", type = 'button
   }
 
   return (
-    <button className={lastClassName} onClick={onClickBtn} type={type}>
+    <button className={lastClassName} onClick={onClickBtn} type={type} disabled={disabled}>
         {children}
     </button>
   )
