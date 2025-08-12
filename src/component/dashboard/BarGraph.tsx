@@ -1,12 +1,11 @@
 'use client';
 import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3";
+import { TotalRun } from '@/types/running.types';
 
-interface DataItem {
-    [key: string]: string | number;
-}
+
 interface BarGraphProps {
-    data :  DataItem[];
+    data :  TotalRun[];
     xKey : string;
     yKey : string;
     width: number;
@@ -49,7 +48,7 @@ export default function BarGraph({
         const y = d3
             .scaleLinear()
             // d3.max의 두 번째 인자는 accessor 함수입니다. d[yKey]가 숫자임을 보장합니다.
-            .domain([0 , d3.max(data, d => Number(d[yKey])) as number])
+            .domain([0 , d3.max(data, d => Number(d[yKey]) || 1) as number])
             .nice()
             .range([height - marginBottom , marginTop]);
 
@@ -83,7 +82,7 @@ export default function BarGraph({
         
         const bars = svg.append('g')
             .selectAll('rect')
-            .data(data)
+            .data(data.filter(d => Number(d[yKey]) > 0))
             .join('rect')
             .attr('x', d => x(String(d[xKey])) as number)
             .attr('y', d=> y(Number(d[yKey])))
@@ -106,13 +105,13 @@ export default function BarGraph({
         });
         bars.on('mouseout', (event)=> {
             // 클릭된 상태가 아닐 때만 원래 색으로 복원
-            const index = d3.select(event.currentTarget).data()[0] ? data.indexOf(d3.select(event.currentTarget).data()[0] as DataItem) : -1;
+            const index = d3.select(event.currentTarget).data()[0] ? data.indexOf(d3.select(event.currentTarget).data()[0] as TotalRun) : -1;
             if (index !== clickedIndexRef.current) {
                 d3.select(event.currentTarget).attr('fill', `${barColor}`);
             }
         });
 
-        function showClickedLine (d: DataItem, targetElement: SVGRectElement) {
+        function showClickedLine (d: TotalRun, targetElement: SVGRectElement) {
             // 모든 바를 원래 색으로 초기화
             bars.attr('fill', barColor);
             // 클릭된 바만 hover 색으로 변경
