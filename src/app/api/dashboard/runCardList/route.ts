@@ -11,7 +11,7 @@ export async function GET(req : NextRequest) { // req 인자를 받아 쿼리 �
 
         const runDocsRef = firestoreAdmin.collection('runs');
         
-        let query = runDocsRef.where('uid' , '==' , uid ).orderBy('createdAt' , 'desc').limit(5);
+        let query = runDocsRef.where('uid' , '==' , uid ).orderBy('createdAt' , 'desc').limit(1);
         
         // lastCreatedAt과 lastDocId가 존재하면, 해당 시점부터 다음 5개를 가져옴
         if (lastDocId) {
