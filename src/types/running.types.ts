@@ -29,3 +29,10 @@ export interface PathPoint {
     curPace : null | number; //sec
     curDistance : number;
 }
+
+export interface TotalRun {
+  day: string;
+  runCount: number;
+  distance: number;
+  time: number;
+}
