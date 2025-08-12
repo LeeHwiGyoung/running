@@ -21,3 +21,31 @@ export function getTimeOfDay() {
   }
 }
 
+export function getWeekRange(dateString?: string) {
+  const now = dateString ? new Date(dateString) : new Date();
+
+  // UTC+9 기준으로 요일과 날짜를 계산
+  const utc9OffsetInMinutes = 9 * 60; // UTC+9는 540분
+  const utc9Time = now.getTime() + now.getTimezoneOffset() * 60 * 1000 + utc9OffsetInMinutes * 60 * 1000;
+  const day = new Date(utc9Time);
+
+  const dayOfWeek = day.getUTCDay(); // UTC 요일(0: 일요일, 1: 월요일)을 가져옴
+
+  // 월요일을 주의 시작일로 설정하기 위한 차이 계산
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  
+  // 주의 시작일 계산
+  const startOfWeek = new Date(utc9Time);
+  startOfWeek.setUTCDate(day.getUTCDate() + diffToMonday);
+  startOfWeek.setUTCHours(0, 0, 0, 0); // UTC+9 기준 00시 00분 00초
+
+  // 주의 마지막 날 계산
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6);
+  endOfWeek.setUTCHours(23, 59, 59, 999); // UTC+9 기준 23시 59분 59초
+
+  return { startOfWeek, endOfWeek };
+}
+
+
+
