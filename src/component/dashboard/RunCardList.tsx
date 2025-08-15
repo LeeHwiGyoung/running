@@ -3,8 +3,8 @@ import { usePathname, useRouter } from "next/navigation";
 import RunCard from "./RunCard";
 import { NextCursor, RunningData } from "@/types/running.types";
 import { useCallback, useState } from "react";
-import useScroll from "@/hooks/useScroll";
-import LoadingSpinner from "../LoadingSpinner";
+import useScroll from "@/hooks/useScroll"
+import RunCardSkeleton from "../skeleton/RunCardSkeleton";
 
 interface RunCardListProps {
   initRunData : RunningData[];
@@ -80,7 +80,7 @@ export default function RunCardList({initRunData ,initNextCursor} : RunCardListP
           })}     
           {loading && (
             <li className="relative">
-              <LoadingSpinner/>
+              <RunCardSkeleton/>
             </li>
           )}
       </ul>
