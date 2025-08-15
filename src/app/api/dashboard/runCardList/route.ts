@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { firestoreAdmin } from "../../../../../lib/firebase/admin";
 import { authenticate } from "../../../../../lib/firebase/auth-middleware";
+import { Timestamp } from "firebase-admin/firestore";
+import { firestore } from 'firebase-admin';
 
 export async function GET(req : NextRequest) { // req 인자를 받아 쿼리 파라미터에 접근
     try {
@@ -8,17 +10,19 @@ export async function GET(req : NextRequest) { // req 인자를 받아 쿼리 �
         const uid = decodedToken.uid;
 
         const lastDocId = req.nextUrl.searchParams.get('lastDocId'); // 클라이언트에서 전달받을 페이지네이션 커서
-
+        const lastCreatedAt = req.nextUrl.searchParams.get('lastCreatedAt');
         const runDocsRef = firestoreAdmin.collection('runs');
         
-        let query = runDocsRef.where('uid' , '==' , uid ).orderBy('createdAt' , 'desc').limit(1);
+        let query = runDocsRef.where('uid' , '==' , uid ).orderBy('createdAt' , 'desc').orderBy(firestore.FieldPath.documentId()).limit(1);
         
         // lastCreatedAt과 lastDocId가 존재하면, 해당 시점부터 다음 5개를 가져옴
-        if (lastDocId) {
+        if (lastDocId && lastCreatedAt) {
+            const timestamp = Timestamp.fromDate(new Date(lastCreatedAt));
             // Timestamp 타입으로 변환 (문자열로 넘어올 경우)
-            query = query.startAfter(lastDocId);
+            query = query.startAfter(timestamp, lastDocId);
         }
 
+        
         const snapshot = await query.get();
 
         if (snapshot.empty) {
@@ -33,9 +37,10 @@ export async function GET(req : NextRequest) { // req 인자를 받아 쿼리 �
 
         // 다음 페이지를 위한 커서 정보 생성
         const lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-        const nextCursor = {
+        const nextCursor =  lastVisibleDoc  ? {
             lastDocId: lastVisibleDoc.id,
-        };
+            lastCreatedAt : lastVisibleDoc.data().createdAt.toDate().toISOString(), 
+        }: null;
 
         return NextResponse.json({runs, nextCursor , status : 200} )
     } catch (error) {
