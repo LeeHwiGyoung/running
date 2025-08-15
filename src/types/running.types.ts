@@ -36,3 +36,8 @@ export interface TotalRun {
   distance: number;
   time: number;
 }
+
+export type NextCursor = {
+    lastDocId : string | null;
+    lastCreatedAt : Date;
+}
