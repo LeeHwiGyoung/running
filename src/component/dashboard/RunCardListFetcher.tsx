@@ -1,5 +1,5 @@
 import RunCardList from '@/component/dashboard/RunCardList'; // 기존 클라이언트 컴포넌트
-import { RunningData } from '@/types/running.types';
+import { NextCursor, RunningData } from '@/types/running.types';
 import { headers } from 'next/headers';
 import React from 'react';
 
@@ -18,12 +18,11 @@ async function getRunningCardList() {
     }
     
     const json = await res.json();
-    console.log(json, 'json')
     return json;
 }
 
 export default async function RunCardListFetcher() {
-    const data: { runs: RunningData[] } = await getRunningCardList();
+    const data: { runs: RunningData[] , nextCursor : NextCursor } = await getRunningCardList();
 
-    return <RunCardList runData={data.runs} />;
+    return <RunCardList initRunData={data.runs} initNextCursor={data.nextCursor}/>;
 }
