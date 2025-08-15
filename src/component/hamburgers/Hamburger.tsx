@@ -48,10 +48,10 @@ export default function Hamburger({buttonPosition = 'right' } : HamburgerProps) 
   }, [isMenuOpen]);
 
   return (
-    <div className={`relative  ${buttonPosition==='right' ? 'ml-auto' : 'mr-auto'}`} 
+    <div className={`relative ${buttonPosition==='right' ? 'ml-auto' : 'mr-auto'} bg-white`} 
       ref={hamburgerRef}>
         <HamburgerButton toggleMenuDisplay={toggleMenu} />
-        {isMenuOpen && <HamburgerMenu items={isLoggedin ? loggedinMenu : loggedoutMenu}/>}
+        {isMenuOpen && <HamburgerMenu className="bg-white" items={isLoggedin ? loggedinMenu : loggedoutMenu}/>}
     </div>
   )
 }
