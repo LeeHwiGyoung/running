@@ -3,7 +3,7 @@ import { authAdmin, firestoreAdmin } from "../../../../../lib/firebase/admin";
 import { authenticate } from "../../../../../lib/firebase/auth-middleware";
 import { ErrorType } from "@/types/api.types";
 
-export async function Delete() {
+export async function DELETE() {
     try {
         const decodedToken = await authenticate();
         const uid = decodedToken.uid;
