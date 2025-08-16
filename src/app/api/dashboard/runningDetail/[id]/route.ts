@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authenticate } from '../../../../../../lib/firebase/auth-middleware';
 import { firestoreAdmin } from '../../../../../../lib/firebase/admin';
-export async function GET(request:NextRequest , {params} : {params : { id : string}}) {
+
+interface RunningDetailRouteParams {
+  params: {
+    id: string;
+  };
+}
+
+export async function GET(request:NextRequest , {params} :RunningDetailRouteParams) {
     try {
         const decodedToken = await authenticate(); //로그인 인증 및 decodedToken 반환
-        const id = params.id;
+        const { id }  = params;
         const uid = decodedToken.uid;
 
-        console.log(id, 'id')
         const runDocsRef = firestoreAdmin.collection('runs').doc(id);
 
         const runSnapShot = await runDocsRef.get();
