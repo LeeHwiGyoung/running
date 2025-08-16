@@ -8,7 +8,7 @@ import { PathPoint, RunningData } from '@/types/running.types'
 
 export default async function page({params} : {params :  Promise<{id : string}>}) {
   const { id }  = await params;
-  const res = await fetch(`http://localhost:3000/api/dashboard/runningDetail/${id}` , {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard/runningDetail/${id}` , {
       credentials: 'include',
       cache: 'no-store',
       headers: {
