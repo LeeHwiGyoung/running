@@ -6,8 +6,8 @@ import DetailRunPerformaceView from '@/component/dashboard/DetailRunPerformaceVi
 import { headers } from 'next/headers'
 import { PathPoint, RunningData } from '@/types/running.types'
 
-export default async function page({params} : {params :  {id : string}}) {
-  const id = params.id;
+export default async function page({params} : {params :  Promise<{id : string}>}) {
+  const { id }  = await params;
   const res = await fetch(`http://localhost:3000/api/dashboard/runningDetail/${id}` , {
       credentials: 'include',
       cache: 'no-store',
