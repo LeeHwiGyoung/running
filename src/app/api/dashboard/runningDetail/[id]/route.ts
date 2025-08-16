@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authenticate } from '../../../../../../lib/firebase/auth-middleware';
 import { firestoreAdmin } from '../../../../../../lib/firebase/admin';
 
-export async function GET(request:NextRequest ,   context : { params: { id: string } }) {
+export async function GET(request:NextRequest ,   { params }: { params: Promise<{ id: string }> }) {
     try {
         const decodedToken = await authenticate(); //로그인 인증 및 decodedToken 반환
-        const { id }  = context.params;
+        const { id }  = await params;
         const uid = decodedToken.uid;
 
         const runDocsRef = firestoreAdmin.collection('runs').doc(id);
