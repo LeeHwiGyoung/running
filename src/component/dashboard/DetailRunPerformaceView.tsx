@@ -19,7 +19,7 @@ export default function DetailRunPerformaceView({position , pathPoints} : Detail
  /*  const [avgCadence, setAvgCadence] = useState<string>("");*/
   const [hoveredSegmentId, setHoveredSegmentId] = useState<number|null>(null);
 
-  
+  console.log(hoveredSegmentId) // 배포용
   const onClickButton = (id : string) => {
     setClickedButton(id);
   }
