@@ -19,7 +19,7 @@ export default function RunningResult() {
   const runData : RunningSummaryForSave = {
     runTitle : title,
     date : formatTimestampToYYYYMMDD(day),
-    dayOfWeek : formatDayOfWeek(Date.now()),
+    dayOfWeek : formatDayOfWeek(day),
     startTime : runningStartTime,
     endTime : runningEndTime,
     totalDistance : totalDistance,
