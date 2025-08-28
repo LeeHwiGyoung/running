@@ -7,7 +7,7 @@ import Button from '../Button';
 import { useRunningStore } from '@/store/useRunningStore';
 import { SaveRunningResultRequestBody } from '@/types/api.types';
 import { RunningSummaryForSave } from '@/types/running.types';
-import { formatDayOfWeek, formatTimestampToYYYYMMDD } from '@/utils/format';
+import { formatDayOfWeek } from '@/utils/format';
 import { getTimeOfDay, getToday } from '@/utils/getToday';
 
 export default function RunningResult() {
@@ -18,7 +18,7 @@ export default function RunningResult() {
   
   const runData : RunningSummaryForSave = {
     runTitle : title,
-    date : formatTimestampToYYYYMMDD(day),
+    date : today,
     dayOfWeek : formatDayOfWeek(day),
     startTime : runningStartTime,
     endTime : runningEndTime,
