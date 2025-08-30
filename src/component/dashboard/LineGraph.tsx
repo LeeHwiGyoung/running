@@ -26,7 +26,7 @@ interface LineGraphProps<T> {
 }
 export default function LineGraph<T extends { timestamp: number }>({data , id , xKey , yKey ,reverseYAxis= false , xAxisFontSize= 16, yAxisFontSize = 16, lineColor = '#B0C4DE', lineWidth = 3, width =400 ,height=200, marginBottom= 20, marginLeft=20, marginRight=20 , marginTop= 20 , setButtonText , setHoveredSegmentId, tickFormatFunc}:LineGraphProps<T>) {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const startTime = data[0].timestamp;
+  const startTime = data[0]?.timestamp;
   
   useEffect(()=> { 
     const svg = d3
@@ -57,13 +57,12 @@ export default function LineGraph<T extends { timestamp: number }>({data , id , 
     }
     y.range([height - marginBottom , marginTop])
 
-
     const line = d3.line()
       .x(d => x(d[xKey])) // X 좌표
       .y(d => y(d[yKey])) // Y 좌표
       .defined(d => d.curPace !== null)
       .curve(d3.curveBasis);
-
+    
     svg //x축 생성
     .append('g')
     .attr('transform', `translate(0, ${height - marginBottom})`) 
@@ -142,7 +141,7 @@ export default function LineGraph<T extends { timestamp: number }>({data , id , 
       const i = bisect(data, mouseX , 1)
       const d0 = data[i - 1];
       const d1 = data[i];
-      let d ;
+      let d;
 
       if (!d1) { // d1이 undefined (즉, x0가 모든 데이터보다 크거나 같을 때)
         d = d0; // d0가 마지막 데이터이므로 d0를 선택
@@ -157,17 +156,16 @@ export default function LineGraph<T extends { timestamp: number }>({data , id , 
       focus.select('.x-hover-text')
        .attr('x', 0) // focus 그룹 기준 X=0 (즉, 수직선 바로 위)
        .attr('y', 15)
-       .text(`${formatTime((d.timestamp - startTime))}`)
+       .text(`${formatTime((d.timestamp - startTime) % 1000)}`)
 
        if(tickFormatFunc){
          setButtonText(tickFormatFunc(d[yKey]))
        }else{
          setButtonText(d[yKey])
        }
-       setHoveredSegmentId(d.id)
-
+       setHoveredSegmentId(i)
     }
-  }, [ ])
+  }, [])
 
   return (
     <svg id={id} ref={svgRef}></svg>
