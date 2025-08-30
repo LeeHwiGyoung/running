@@ -1,6 +1,6 @@
 'use client';
 import { formatPace, formatTime } from '@/utils/format';
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from '../Button';
 import TrackingCarousel from './TrackingCarousel';
 import { CarouselData } from '@/types/type';
@@ -37,7 +37,11 @@ export default function Tracking() {
   
   const onClickStopBtn = () => {
     stopTracking();
-    router.push('/tracking/result');
+    if(totalDistance > 0) {
+        router.push('/tracking/result');
+    }else {
+        router.push('/');
+    }
   }
 
   const onClickRestartBtn = () => {
@@ -53,6 +57,11 @@ export default function Tracking() {
     setStep(1);
   }
 
+  useEffect(()=> {
+    return () => {
+        setStep(0);
+    }
+  },[])
 
   return ( 
     <>
