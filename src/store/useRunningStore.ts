@@ -136,7 +136,7 @@ export const useRunningStore = create<RunningState & RunningActions>((set , get)
             
             return {
                 isTracking : false,
-                isRunningPaused : true,
+                isRunningPaused : false,
                 path : newPath,
                 currentPathSegment : [],
                 runningEndTime : currentEndTime,
