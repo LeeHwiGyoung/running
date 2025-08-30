@@ -16,39 +16,21 @@ interface DetailRunPerformaceViewProps {
 export default function DetailRunPerformaceView({position , pathPoints} : DetailRunPerformaceViewProps) {
   const [clickedButton , setClickedButton] = useState<string>('pace');
   const [avgPace ,setAvgPace] = useState<string>("");
- /*  const [avgCadence, setAvgCadence] = useState<string>("");*/
   const [hoveredSegmentId, setHoveredSegmentId] = useState<number|null>(null);
 
-  console.log(hoveredSegmentId) // 배포용
   const onClickButton = (id : string) => {
     setClickedButton(id);
   }
- /*  const dummyPath = dummyPace.map((data)=> {
-    const id = data.properties.id;
-    const latitude = data.geometry.coordinates[1];
-    const longitude = data.geometry.coordinates[0];
-    return {id, latitude , longitude}  
-    }
-  ) */
-
-
+  
 
   return (
     <>
-        <KakaoMap className='w-full h-[200px]' mapId='detailMap' latitude={position.latitude} longitude={position.longitude} level={2} />
+        <KakaoMap className='w-full h-[200px]' mapId='detailMap' latitude={position.latitude} longitude={position.longitude} points={pathPoints} level={2} hoveredSegmentId={hoveredSegmentId}/>
         <div className='flex gap-4 mt-4'>
             <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-[#B0C4DE] ${clickedButton === 'pace' ? 'bg-[#B0C4DE]' : 'bg-white'}`} onClick={()=> onClickButton('pace')}>
                 <span>페이스</span>
                 <span>{avgPace}</span>
             </Button>
-            {
-              /*
-               <Button className={`grow-1 border p-4 border-gray-200 rounded-md hover:bg-[#B0C4DE] ${clickedButton === 'cadence' ? 'bg-[#B0C4DE]' : 'bg-white'}`} onClick={()=> onClickButton('cadence')}>
-                <span>케이던스</span>
-                <span>{avgCadence}</span>
-               </Button>
-              */
-            }
          </div>
 
           {clickedButton === 'pace' && (
